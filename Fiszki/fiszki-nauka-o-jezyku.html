@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiszki – Nauka o Języku i Formy Wypowiedzi (Część Testowa)</title>
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #090e1f 0%, #171536 50%, #090e1f 100%);
+      --card-bg: #182238;
+      --card-border: rgba(255, 255, 255, 0.12);
+      --card-front-glow: rgba(99, 102, 241, 0.25);
+      --card-back-glow: rgba(168, 85, 247, 0.25);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --badge-bg: rgba(99, 102, 241, 0.2);
+      --badge-text: #a5b4fc;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e0e7ff 50%, #f8fafc 100%);
+      --card-bg: #ffffff;
+      --card-border: rgba(0, 0, 0, 0.08);
+      --card-front-glow: rgba(99, 102, 241, 0.15);
+      --card-back-glow: rgba(168, 85, 247, 0.15);
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --badge-bg: rgba(99, 102, 241, 0.12);
+      --badge-text: #3730a3;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 40px;
+      overflow-x: hidden;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      width: 100%;
+      max-width: 820px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .title-group h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      background: linear-gradient(to right, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .title-group p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    button.icon-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button.icon-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+
+    .controls-wrapper {
+      width: 100%;
+      max-width: 820px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tabs-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      background: rgba(15, 23, 42, 0.4);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      gap: 4px;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+    }
+
+    .select-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .custom-select {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 7px 12px;
+      border-radius: 10px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .progress-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .progress-bar-bg {
+      flex: 1;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #6366f1, #a855f7);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    /* Flashcard Stage */
+    .stage {
+      width: 100%;
+      max-width: 760px;
+      min-height: 470px;
+      perspective: 1400px;
+      margin-bottom: 24px;
+      user-select: none;
+    }
+
+    .card {
+      width: 100%;
+      min-height: 470px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      border-radius: 24px;
+    }
+
+    .card.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      min-height: 470px;
+      height: 100%;
+      backface-visibility: hidden !important;
+      -webkit-backface-visibility: hidden !important;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 30px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+      box-sizing: border-box;
+      overflow-y: auto;
+      transform-style: preserve-3d;
+      transition: opacity 0.3s ease;
+    }
+
+    .card-face.front {
+      transform: rotateY(0deg) translateZ(1px);
+      box-shadow: 0 0 35px var(--card-front-glow);
+    }
+
+    .card-face.back {
+      transform: rotateY(180deg) translateZ(1px);
+      box-shadow: 0 0 35px var(--card-back-glow);
+    }
+
+    /* Wykluczenie odbicia lustrzanego */
+    .card:not(.is-flipped) .card-face.back {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .card.is-flipped .card-face.front {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .card:not(.is-flipped) .card-face.front {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .card.is-flipped .card-face.back {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .badge-category {
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 5px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+    }
+
+    .status-badge.known {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+    }
+
+    .status-badge.review {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      padding: 10px 0;
+    }
+
+    .term-title {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 8px;
+      color: #818cf8;
+    }
+
+    .category-subtag {
+      display: inline-block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #c084fc;
+      margin-bottom: 14px;
+    }
+
+    .info-box {
+      width: 100%;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .info-card {
+      background: rgba(255, 255, 255, 0.04);
+      border-left: 3px solid var(--primary);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .info-card.accent {
+      border-left-color: #a855f7;
+    }
+
+    .info-card.success {
+      border-left-color: #10b981;
+    }
+
+    .info-card strong {
+      display: block;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #a5b4fc;
+      margin-bottom: 2px;
+    }
+
+    .highlight {
+      color: #f1f5f9;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--card-border);
+      padding-top: 12px;
+      margin-top: 10px;
+    }
+
+    .flip-hint {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      opacity: 0.8;
+    }
+
+    .actions-bar {
+      width: 100%;
+      max-width: 760px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn-group, .status-btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-success {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+
+    .btn-success:hover, .btn-success.active {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .btn-warning {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+    }
+
+    .btn-warning:hover, .btn-warning.active {
+      background: var(--warning);
+      color: #fff;
+    }
+
+    .keyboard-shortcuts {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .kbd {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-window {
+      background: #1e293b;
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 820px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+
+    [data-theme="light"] .modal-window {
+      background: #ffffff;
+    }
+
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .modal-body {
+      padding: 16px 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .search-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      outline: none;
+    }
+
+    [data-theme="light"] .search-input {
+      background: #f1f5f9;
+    }
+
+    .items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .list-item {
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.03);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .list-item:hover {
+      background: rgba(99, 102, 241, 0.1);
+      border-color: var(--primary);
+    }
+
+    .list-item-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      color: #818cf8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .list-item-category {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #c084fc;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .list-item-def {
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .list-item-example {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    canvas#confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    @media (max-width: 640px) {
+      .stage, .card, .card-face {
+        min-height: 520px;
+      }
+      .term-title {
+        font-size: 1.6rem;
+      }
+      .actions-bar {
+        justify-content: center;
+      }
+      .nav-btn-group, .status-btn-group {
+        width: 100%;
+        justify-content: center;
+      }
+      .keyboard-shortcuts {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <canvas id="confetti"></canvas>
+
+  <header>
+    <div class="title-group">
+      <h1>Nauka o Języku i Formy Wypowiedzi</h1>
+      <p>Baza teorii, stylistyki, retoryki i form testowych do matury CKE</p>
+    </div>
+    <div class="header-actions">
+      <a href="../index.html" class="icon-btn" title="Powrót do menu głównego" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem;">🏠</a>
+      
+      <button class="icon-btn" id="listBtn" title="Spis wszystkich zagadnień (L)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="icon-btn" id="shuffleBtn" title="Pomieszaj fiszki (S)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
+      </button>
+      <button class="icon-btn" id="themeBtn" title="Przełącz tryb jasny/ciemny">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="controls-wrapper">
+    <div class="tabs-row">
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">Wszystkie (<span id="countAll">0</span>)</button>
+        <button class="filter-btn" data-filter="review">Do powtórki (<span id="countReview">0</span>)</button>
+        <button class="filter-btn" data-filter="known">Opanowane (<span id="countKnown">0</span>)</button>
+      </div>
+
+      <div class="select-group">
+        <select class="custom-select" id="catFilterSelect">
+          <option value="all">Wszystkie działy</option>
+          <option value="Funkcje językowe">Funkcje językowe</option>
+          <option value="Stylizacja i style">Stylizacja i style języka</option>
+          <option value="Retoryka i argumentacja">Retoryka i argumentacja</option>
+          <option value="Błędy językowe">Błędy językowe i ich korekta</option>
+          <option value="Zjawiska leksykalne">Zjawiska leksykalne</option>
+          <option value="Formy wypowiedzi">Formy wypowiedzi (Notatka syntetyzująca itp.)</option>
+        </select>
+
+        <select class="custom-select" id="modeSelect">
+          <option value="term-first">Przód: Pojęcie ➔ Tył: Definicja i przykłady</option>
+          <option value="def-first">Przód: Cechy / przykłady ➔ Tył: Jaki to termin?</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+      <div class="progress-text" id="progressText">1 / 40</div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="card" id="flashcard">
+      <!-- FRONT -->
+      <div class="card-face front">
+        <div class="card-top">
+          <span class="badge-category" id="frontCategory">DZIAŁ</span>
+          <span class="status-badge" id="frontStatus">Do nauki</span>
+        </div>
+        <div class="card-content" id="frontContent">
+          <!-- Dynamic -->
+        </div>
+        <div class="card-footer">
+          <div class="flip-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+            Kliknij lub naciśnij Spację, aby obrócić
+          </div>
+          <span id="frontIndexHint">Karta 1/40</span>
+        </div>
+      </div>
+
+      <!-- BACK -->
+      <div class="card-face back">
+        <div class="card-top">
+          <span class="badge-category" id="backCategory">DZIAŁ</span>
+          <span class="status-badge" id="backStatus">Do nauki</span>
+        </div>
+        <div class="card-content" id="backContent">
+          <!-- Dynamic -->
+        </div>
+        <div class="card-footer">
+          <div class="flip-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+            Kliknij lub Spacja, aby odwrócić
+          </div>
+          <span id="backIndexHint">Karta 1/40</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions-bar">
+    <div class="nav-btn-group">
+      <button class="btn" id="prevBtn" title="Poprzednia (Strzałka w lewo)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Wstecz
+      </button>
+      <button class="btn btn-primary" id="flipBtn" title="Obróć kartę (Spacja)">
+        Obróć
+      </button>
+      <button class="btn" id="nextBtn" title="Następna (Strzałka w prawo)">
+        Dalej
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+
+    <div class="status-btn-group">
+      <button class="btn btn-warning" id="markReviewBtn" title="Oznacz do powtórki (Klawisz 1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        Do powtórki
+      </button>
+      <button class="btn btn-success" id="markKnownBtn" title="Oznacz jako opanowane (Klawisz 2)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Umiem to!
+      </button>
+    </div>
+  </div>
+
+  <div class="keyboard-shortcuts">
+    Skróty: <span class="kbd">Spacja</span> obrót &bull; <span class="kbd">&larr;</span> / <span class="kbd">&rarr;</span> nawigacja &bull; <span class="kbd">1</span> powtórz &bull; <span class="kbd">2</span> umiem &bull; <span class="kbd">S</span> losuj &bull; <span class="kbd">L</span> lista
+  </div>
+
+  <!-- Modal list -->
+  <div class="modal-overlay" id="listModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h2>Spis zagadnień z nauki o języku</h2>
+        <button class="icon-btn" id="closeModalBtn" title="Zamknij (Esc)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="search-input" id="modalSearch" placeholder="Szukaj pojęcia, funkcji, błędu lub przykładu...">
+        <div class="items-list" id="modalList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const languageData = [
+      // 1. FUNKCJE JĘZYKOWE (6)
+      {
+        id: "funkcja-informatywna",
+        term: "Funkcja informatywna (poznawcza)",
+        category: "Funkcje językowe",
+        definition: "Komunikat służy do przekazania obiektywnych informacji o świecie, faktach, zdarzeniach lub danych. Nadawca powstrzymuje się od ocen emocjonalnych.",
+        markers: "Zdania oznajmujące, styl neutralny, rzeczowość, precyzja, brak wykrzykników i słownictwa wartościującego.",
+        example: "„Egzamin maturalny z języka polskiego w formule 2023 trwa 240 minut i składa się z trzech części”."
+      },
+      {
+        id: "funkcja-impresywna",
+        term: "Funkcja impresywna (perswazyjna / konatywna)",
+        category: "Funkcje językowe",
+        definition: "Wypowiedź ma na celu wywarcie wpływu na odbiorcę: skłonienie go do określonego zachowania, działania, zmiany opinii lub przyjęcia postawy nadawcy.",
+        markers: "Czasowniki w trybie rozkazującym, zwroty do adresata (wołacz), bezokoliczniki z nakazem, pytania retoryczne, apele, wykrzyknienia.",
+        example: "„Nie zwlekaj z powtórkami! Zacznij uczyć się systematycznie już dziś, a zdasz maturę z wyróżnieniem!”"
+      },
+      {
+        id: "funkcja-ekspresywna",
+        term: "Funkcja ekspresywna (emotywna)",
+        category: "Funkcje językowe",
+        definition: "Tekst służy wyrażeniu uczuć, emocji, nastrojów, subiektywnego stanu psychicznego i osobistych ocen nadawcy.",
+        markers: "Wykrzyknienia, znaki zapytania w połączeniu z wykrzyknikiem, zdrobnienia, zgrubienia, słownictwo wartościujące (wspaniały, ohydny), wykrzykniki (ach!, och!).",
+        example: "„Nareszcie koniec tego koszmaru! Jestem niesamowicie szczęśliwy i dumny z tego wyniku!”"
+      },
+      {
+        id: "funkcja-poetycka",
+        term: "Funkcja poetycka (estetyczna)",
+        category: "Funkcje językowe",
+        definition: "Uwaga odbiorcy skupiona jest na samym ukształtowaniu językowym wypowiedzi, jej brzmieniu, oryginalności formy, rytmie i pięknie słowa.",
+        markers: "Metafory, epitety, rymy, niezwykły dobór słów, instrumentacja głoskowa, nietypowy szyk zdań.",
+        example: "„O szyby deszcz dzwoni, deszcz dzwoni jesienny / I pluszcze jednaki, miarowy, niezmienny...”"
+      },
+      {
+        id: "funkcja-fatyczna",
+        term: "Funkcja fatyczna",
+        category: "Funkcje językowe",
+        definition: "Służy nawiązaniu, podtrzymaniu lub zakończeniu kontaktu komunikacyjnego między rozmówcami oraz sprawdzeniu, czy kanał łączności działa.",
+        markers: "Formuły powitalne i pożegnalne, wtrącenia podtrzymujące kontakt: „halo?”, „słuchasz mnie?”, „no wiesz”, „aha”, „rozumiesz?”, „do widzenia”.",
+        example: "„Halo? Słyszysz mnie dobrze? No więc, jak mówiłem...”"
+      },
+      {
+        id: "funkcja-metajezykowa",
+        term: "Funkcja metajęzykowa",
+        category: "Funkcje językowe",
+        definition: "Wypowiedź skupia się na samym języku, kodzie porozumiewania się, objaśnianiu znaczenia słów, terminów lub reguł gramatycznych.",
+        markers: "Definicje słownikowe, formuły objaśniające: „wyraz ten oznacza...”, „w języku polskim wyróżniamy...”, „innymi słowy”.",
+        example: "„Wyraz »pleonazm« oznacza błąd językowy polegający na niepotrzebnym użyciu wyrazów o tym samym znaczeniu”."
+      },
+
+      // 2. STYLIZACJA I STYLE JĘZYKA (10)
+      {
+        id: "stylizacja-archaizacja",
+        term: "Archaizacja",
+        category: "Stylizacja i style",
+        definition: "Celowe wprowadzenie do utworu archaizmów (przestarzałych słów, form odmiany lub składni), aby upodobnić język do mowy dawnych epok i nadać tekstowi koloryt historyczny.",
+        markers: "Formy czasu przeszłego zaprzeszłego, dawne spójniki (iż, jako, azaliż), inwersja, przestarzałe słownictwo (waćpan, białogłowa, kajet).",
+        example: "Sienkiewicz w „Trylogii”: „Kończ waść! wstydu oszczędź!”; Bogurodzica."
+      },
+      {
+        id: "stylizacja-dialektyzacja",
+        term: "Dialektyzacja (gwaryzacja)",
+        category: "Stylizacja i style",
+        definition: "Celowe wprowadzenie do tekstu elementów gwary wiejskiej (leksyki, fonetyki, fleksji), aby oddać autentyczny sposób mówienia mieszkańców wsi.",
+        markers: "Mazurzenie (wymowa s, z, c, dz zamiast sz, ż, cz, dż: „cysty”, „zaba”), regionalizmy, wiejskie słownictwo (kumie, skrzat, parobek).",
+        example: "Reymont w „Chłopach”, Wyspiański w „Weselu” (język Czepca, Kliminy)."
+      },
+      {
+        id: "stylizacja-kolokwializacja",
+        term: "Kolokwializacja",
+        category: "Stylizacja i style",
+        definition: "Wprowadzenie do literatury elementów języka potocznego, słownictwa codziennego, a nawet wulgarnego, w celu zbliżenia tekstu do realiów życia codziennego lub zburzenia patosu.",
+        markers: "Potoczne zwroty, skróty myślowe, emocjonalne wykrzyknienia, język ulicy, brak ozdobników.",
+        example: "Poezja Juliana Tuwima, Miron Białoszewski, Tadeusz Różewicz."
+      },
+      {
+        id: "stylizacja-srodowiskowa",
+        term: "Stylizacja środowiskowa (socjolekt / żargon)",
+        category: "Stylizacja i style",
+        definition: "Użycie w utworze języka charakterystycznego dla konkretnej grupy zawodowej lub społecznej (język młodzieżowy, więzienny – grypsera, lekarski, żołnierski).",
+        markers: "Specjalistyczny slang, hermetyczne słownictwo zrozumiałe tylko dla członków danej grupy.",
+        example: "Grypsera więzienna w „Innym świecie” Herlinga-Grudzińskiego lub slang pensjonarek w „Ferdydurke” Gombrowicza."
+      },
+      {
+        id: "stylizacja-biblijna",
+        term: "Stylizacja biblijna",
+        category: "Stylizacja i style",
+        definition: "Naśladowanie podniosłego stylu Pisma Świętego. Nadaje utworowi ton proroczy, sakralny, uświęcony i uniwersalny.",
+        markers: "Rozpoczynanie kolejnych zdań od spójników „I...”, „A...”, paralelizmy składniowe, inwersje, archaizmy, powtórzenia, uroczysty rytm.",
+        example: "Mickiewicz – „Księgi narodu polskiego i pielgrzymstwa polskiego”: „I rzekła Polska: Ktokolwiek przyjdzie do mnie, wolnym będzie...”"
+      },
+      {
+        id: "styl-naukowy",
+        term: "Styl naukowy",
+        category: "Stylizacja i style",
+        definition: "Odmiana języka służąca do precyzyjnego opisu rzeczywistości badawczej i naukowej. Cechuje go ścisłość, logika i brak emocji.",
+        markers: "Terminologia specjalistyczna, konstrukcje bezosobowe („zbadano”, „udowodniono”), zdania wielokrotnie złożone podrzędnie, tabele, definicje.",
+        example: "„Analiza spektrofotometryczna próbek wykazała istotną korelację między stężeniem enzymu a kinetyką reakcji”."
+      },
+      {
+        id: "styl-urzedowy",
+        term: "Styl urzędowo-kancelaryjny",
+        category: "Stylizacja i style",
+        definition: "Styl pism oficjalnych, ustaw, regulaminów i podań. Charakteryzuje się schematycznością, bezosobowością i formą nakazowo-zakazową.",
+        markers: "Czasowniki modalne (należy, zakazuje się, podlega karze), strona bierna, brak nacechowania emocjonalnego, szablony językowe.",
+        example: "„Wnioski złożone po terminie określonym w regulaminie nie będą rozpatrywane przez komisję egzaminacyjną”."
+      },
+      {
+        id: "styl-publicystyczny",
+        term: "Styl publicystyczny",
+        category: "Stylizacja i style",
+        definition: "Styl prasy, reportaży i felietonów. Łączy funkcję informacyjną z perswazyjną – informuje o wydarzeniach i jednocześnie kształtuje opinię czytelnika.",
+        markers: "Wyraziste słownictwo wartościujące, metafory publicystyczne, pytania retoryczne, chwytliwe nagłówki, dążenie do atrakcyjności przekazu.",
+        example: "„Czy rządzący mają wreszcie odwagę spojrzeć prawdzie w oczy i powstrzymać galopującą drożyznę?”"
+      },
+      {
+        id: "styl-potoczny",
+        term: "Styl potoczny",
+        category: "Stylizacja i style",
+        definition: "Naturalna, codzienna odmiana języka służąca bezpośredniej komunikacji w sytuacjach prywatnych i swobodnych.",
+        markers: "Skróty myślowe, emocjonalizmy, kolokwializmy, niedokończone zdania, gesty, wykrzykniki.",
+        example: "„Słuchaj, wpadnij do mnie po lekcjach, to ogarniemy tę matmę w pół godziny”."
+      },
+      {
+        id: "styl-artystyczny",
+        term: "Styl artystyczny",
+        category: "Stylizacja i style",
+        definition: "Indywidualny język literatury pięknej. Cechuje go wieloznaczność, subiektywizm oraz dominacja funkcji poetyckiej.",
+        markers: "Środki stylistyczne (metafory, epitety, porównania), bogactwo synonimów, indywidualny styl autora (idiostyl).",
+        example: "Fragmenty prozy Brunona Schulza czy poezji Bolesława Leśmiana."
+      },
+
+      // 3. RETORYKA I ARGUMENTACJA (7)
+      {
+        id: "argumenty-rzeczowe",
+        term: "Argumenty rzeczowe (faktyczne)",
+        category: "Retoryka i argumentacja",
+        definition: "Argumenty oparte na sprawdzalnych, bezspornych faktach, danych statystycznych, wynikach badań naukowych, datach historycznych lub cytatach z uznanych autorytetów.",
+        markers: "Liczby, procenty, źródła naukowe, nazwiska ekspertów, dokumenty.",
+        example: "„Według raportu CBOS z 2024 roku aż 78% ankietowanych popiera rozbudowę infrastruktury odnawialnych źródeł energii”."
+      },
+      {
+        id: "argumenty-logiczne",
+        term: "Argumenty logiczne",
+        category: "Retoryka i argumentacja",
+        definition: "Argumenty oparte na poprawnym rozumowaniu: relacjach przyczynowo-skutkowych, indukcji (od szczegółu do uogólnienia), dedukcji (od reguły ogólnej do wniosku szczegółowego) lub analogii.",
+        markers: "Spójniki logiczne: „ponieważ”, „zatem”, „w konsekwencji”, „jeśli A, to B”.",
+        example: "„Każdy człowiek potrzebuje odpoczynku do zachowania zdrowia. Lekarze pracujący po 48 godzin bez przerwy są przemęczeni, co drastycznie zwiększa ryzyko błędu medycznego”."
+      },
+      {
+        id: "argumenty-emocjonalne",
+        term: "Argumenty emocjonalne",
+        category: "Retoryka i argumentacja",
+        definition: "Argumenty celowo odwołujące się do uczuć odbiorcy (litości, współczucia, dumy narodowej, strachu, poczucia sprawiedliwości) zamiast do chłodnego rozumu.",
+        markers: "Słowa wartościujące, wykrzyknienia, dramatyczne obrazy, odwołania do sumienia i godności.",
+        example: "„Jak moglibyśmy spojrzeć w oczy naszym dzieciom, gdybyśmy z obojętnością przeszli obok krzywdy bezbronnych zwierząt?”"
+      },
+      {
+        id: "perswazja-vs-manipulacja",
+        term: "Perswazja a Manipulacja",
+        category: "Retoryka i argumentacja",
+        definition: "Perswazja to uczciwe przekonywanie do swoich racji za pomocą jawnych argumentów z poszanowaniem wolności odbiorcy. Manipulacja to nieuczciwe, ukryte wywieranie wpływu z zatajeniem prawdziwych intencji na korzyść manipulatora.",
+        markers: "Perswazja: transparentność i fakty. Manipulacja: półprawdy, kłamstwa, chwyty erystyczne, żerowanie na lękach.",
+        example: "Perswazja: „Kup ten produkt, bo spełnia normy i ma 5 lat gwarancji”. Manipulacja: „Tylko frajerzy nie kupują tego produktu – zostań kimś lepszym!”."
+      },
+      {
+        id: "chwyt-ad-personam",
+        term: "Argumentum ad personam",
+        category: "Retoryka i argumentacja",
+        definition: "Chwyt erystyczny (pozamerytoryczny) polegający na bezprawnym ataku na osobę przeciwnika (jego wygląd, wiek, wykształcenie, życie prywatne) zamiast na jego argumenty.",
+        markers: "Wycieczki osobiste, inwektywy, zarzuty niemające związku z tematem dyskusji.",
+        example: "„Co pan może wiedzieć o reformie edukacji, skoro sam ledwo skończył pan studia zaoczne?”"
+      },
+      {
+        id: "chwyt-ad-populum",
+        term: "Argumentum ad populum",
+        category: "Retoryka i argumentacja",
+        definition: "Odwoływanie się do uprzedzeń, emocji i dumy tłumu lub powoływanie się na powszechność zjawiska zamiast na dowody („wszyscy tak robią”).",
+        markers: "„Prawdziwy Polak wie, że...”, „Wszyscy doskonale wiemy, jak jest”, „Miliony ludzi nie mogą się mylić”.",
+        example: "„Nie potrzebujemy badań naukowych, przecież każdy uczciwy obywatel widzi gołym okiem, jak jest!”"
+      },
+      {
+        id: "chwyt-rownia-pochyla",
+        term: "Błąd równi pochyłej (Slippery slope)",
+        category: "Retoryka i argumentacja",
+        definition: "Błąd logiczny polegający na twierdzeniu bez wystarczających dowodów, że jedno małe ustępstwo doprowadzi nieuchronnie do lawiny katastrofalnych skutków.",
+        markers: "„Jeśli zgodzimy się na A, to natychmiast nastąpi B, a potem dojdzie do totalnej zagłady C”.",
+        example: "„Jeśli pozwolimy uczniom na korzystanie z telefonów na przerwie, za miesiąc nikt nie otworzy podręcznika, a szkoła całkowicie upadnie”."
+      },
+
+      // 4. BŁĘDY JĘZYKOWE (7)
+      {
+        id: "blad-pleonazm",
+        term: "Pleonazm („masło maślane”)",
+        category: "Błędy językowe",
+        definition: "Błąd logiczno-językowy polegający na połączeniu wyrazów, z których jeden zawiera już w swoim znaczeniu treść drugiego (zbędne powtórzenie cechy).",
+        markers: "Wyrażenia nadmiarowe semantycznie.",
+        example: "Błędnie: „cofać się w tył” ➔ Poprawnie: „cofać się”; „w miesiącu lipcu” ➔ „w lipcu”; „fakt autentyczny” ➔ „fakt”; „akwen wodny” ➔ „akwen”; „potencjalne możliwości” ➔ „możliwości”."
+      },
+      {
+        id: "blad-tautologia",
+        term: "Tautologia",
+        category: "Błędy językowe",
+        definition: "Błąd stylistyczny polegający na powtórzeniu tej samej myśli innymi słowami w jednym lub sąsiednich zdaniach, niewnoszący żadnej nowej treści.",
+        markers: "Pozorne wyjaśnienia, puste powtórzenia definicyjne.",
+        example: "„Poprawa sytuacji przyniesie polepszenie warunków życiowych”; „Wzrost zysków spowoduje, że firma będzie zarabiać więcej”."
+      },
+      {
+        id: "blad-kontaminacja",
+        term: "Kontaminacja frazeologiczna",
+        category: "Błędy językowe",
+        definition: "Błąd frazeologiczny polegający na skrzyżowaniu (pomieszaniu) dwóch różnych, poprawnych związków frazeologicznych w jeden nielogiczny twór.",
+        markers: "Hybryda dwóch utartych powiedzeń.",
+        example: "Błędnie: „w każdym bądź razie” (krzyżówka: »w każdym razie« + »bądź co bądź«); „odgrywać pierwsze skrzypce” (krzyżówka: »grać pierwsze skrzypce« + »odgrywać rolę«)."
+      },
+      {
+        id: "blad-fleksyjny",
+        term: "Błąd fleksyjny",
+        category: "Błędy językowe",
+        definition: "Niepoprawne odmienienie wyrazu przez przypadki, osoby, liczby lub czasy; zastosowanie błędnej końcówki fleksyjnej.",
+        markers: "Błędne formy czasowników i rzeczowników.",
+        example: "Błędnie: „poszłem” (mężczyzna) ➔ Poprawnie: „poszedłem”; „w cudzysłowiu” ➔ „w cudzysłowie”; „lubieją” ➔ „lubią”; „dwoma rękami” ➔ „dwiema rękami”."
+      },
+      {
+        id: "blad-skladniowy-imieslow",
+        term: "Błąd imiesłowowego równoważnika zdania",
+        category: "Błędy językowe",
+        definition: "Błąd składniowy polegający na użyciu imiesłowu przysłówkowego (-ąc, -wszy, -łszy), gdy podmiot zdania głównego jest inny niż wykonawca czynności wyrażonej imiesłowem.",
+        markers: "Rozbieżność podmiotów w zdaniu złożonym.",
+        example: "Błędnie: „Idąc do szkoły, padał rzęsisty deszcz” (to deszcz szedł do szkoły?). ➔ Poprawnie: „Gdy szedłem do szkoły, padał rzęsisty deszcz”."
+      },
+      {
+        id: "blad-leksykalny",
+        term: "Błąd leksykalny (słownikowy)",
+        category: "Błędy językowe",
+        definition: "Użycie słowa w niewłaściwym znaczeniu, mylenie wyrazów podobnie brzmiących (paronimów) lub błędne rozumienie ich sensu.",
+        markers: "Mylenie: bynajmniej z przynajmniej; adoptować z adaptować; efektowny z efektywny.",
+        example: "Błędnie: „Bynajmniej raz w tygodniu chodzę na basen” ➔ Poprawnie: „Przynajmniej raz w tygodniu...”; „Dedykował mu artykuł w gazecie” (nie będąc autorem)."
+      },
+      {
+        id: "blad-zwiazek-rzadu",
+        term: "Błąd związku rządu",
+        category: "Błędy językowe",
+        definition: "Błąd składniowy polegający na użyciu rzeczownika w niewłaściwym przypadku, wymaganym przez dany czasownik.",
+        markers: "Zły przypadek po czasownikach: używać, potrzebować, szukać, uczyć.",
+        example: "Błędnie: „Używać telefon” (biernik) ➔ Poprawnie: „Używać telefonu” (dopełniacz); „Szukać książkę” ➔ „Szukać książki”."
+      },
+
+      // 5. ZJAWISKA LEKSYKALNE I SŁOWNICTWO (6)
+      {
+        id: "leksyka-neosemantyzm",
+        term: "Neosemantyzm",
+        category: "Zjawiska leksykalne",
+        definition: "Istniejący już w języku wyraz, który zyskał zupełnie nowe, dodatkowe znaczenie pod wpływem rozwoju technologii, kultury lub zmian społecznych.",
+        markers: "Stare słowo w nowej roli.",
+        example: "„Myszka” (kiedyś tylko gryzoń, dziś urządzenie do komputera); „wirus” (biologiczny ➔ komputerowy); „chmura” (na niebie ➔ wirtualny dysk danych); „tapeta” (na ścianie ➔ tło ekranu)."
+      },
+      {
+        id: "leksyka-zapozyczenia-kalka",
+        term: "Zapożyczenie i Kalka językowa",
+        category: "Zjawiska leksykalne",
+        definition: "Zapożyczenie to słowo przejęte bezpośrednio z języka obcego. Kalka językowa to dosłowne przetłumaczenie obcego wyrazu lub frazy na język ojczysty.",
+        markers: "Anglicyzmy, kalki ze zwrotów obcojęzycznych.",
+        example: "Zapożyczenie: „weekend”, „komputer”, „smartfon”. Kalka: „mieć miejsce” (z niem. stattfinden); „ciasteczka” w przeglądarce (z ang. cookies); „drapacz chmur” (z ang. skyscraper)."
+      },
+      {
+        id: "leksyka-melioratywy-pejoratywy",
+        term: "Melioratywy a Pejoratywy",
+        category: "Zjawiska leksykalne",
+        definition: "Wyrazy nacechowane emocjonalnie: melioratywy niosą zabarwienie dodatnie, życzliwe i pieszczotliwe, natomiast pejoratywy mają zabarwienie ujemne, pogardliwe i lekceważące.",
+        markers: "Odcienie emocjonalne słów neutralnych.",
+        example: "Neutralne: pies ➔ Melioratyw: piesek, psina ➔ Pejoratyw: psisko, kundel, brytan. Neutralne: kobieta ➔ babka / babsztyl."
+      },
+      {
+        id: "leksyka-polisemia-homonim",
+        term: "Polisemia a Homonimia",
+        category: "Zjawiska leksykalne",
+        definition: "Polisemia to wieloznaczność jednego wyrazu wywodząca się ze wspólnego źródła skojarzeniowego. Homonimia to przypadkowa zbieżność brzmieniowa słów o całkowicie odmiennych, niezwiązanych znaczeniach.",
+        markers: "Wspólne pochodzenie vs czysty przypadek fonetyczny.",
+        example: "Polisemia: „ucho” (od człowieka / ucho dzbanka / ucho igielne). Homonimia: „zamek” (budowla warowna / zamek błyskawiczny / zamek do drzwi)."
+      },
+      {
+        id: "leksyka-eufemizm",
+        term: "Eufemizm",
+        category: "Zjawiska leksykalne",
+        definition: "Wyraz lub sformułowanie zastępujące słowo drastyczne, wulgarne, przykre, nieeleganckie lub tabuizowane, w celu złagodzenia wydźwięku wypowiedzi.",
+        markers: "Omówienia łagodzące ton.",
+        example: "„Odszedł na wieczny spoczynek” (zamiast: umarł); „mijać się z prawdą” (kłamać); „człowiek o ograniczonej sprawności” (inwalida)."
+      },
+      {
+        id: "leksyka-skrotowce",
+        term: "Skrótowce (Akronimy)",
+        category: "Zjawiska leksykalne",
+        definition: "Słowa powstałe ze skróconych nazw wielowyrazowych. Dzielą się na: literowce (czytane głoska po głosce: NBP, TVP), głoskowce (czytane jak jedno słowo: ZUS, PAN) oraz sylabowce.",
+        markers: "Wielkie litery, odmienność skrótowców z łącznikiem (w ZUS-ie).",
+        example: "Literowiec: PKP (Pe-Ka-Pe). Głoskowiec: PAN (Polaka Akademia Nauk). Złożeniowiec: Polfa (Polska Farmacja)."
+      },
+
+      // 6. FORMY WYPOWIEDZI MATURALNYCH (4)
+      {
+        id: "forma-notatka-syntetyzujaca",
+        term: "Notatka syntetyzująca (Część testowa)",
+        category: "Formy wypowiedzi",
+        definition: "Zadanie w arkuszu maturalnym (4 punkty): zwięzłe, rzeczowe podsumowanie dwóch tekstów nieliterackich na wspólny temat. Wymaga zestawienia stanowisk obu autorów, wskazania podobieństw lub różnic i sparafrazowania myśli.",
+        markers: "Objętość: 60–90 słów! Spójność, synteza, brak dosłownych cytatów, bezstronność (zakaz własnych opinii).",
+        example: "Schemat: „Oba teksty podejmują problematykę X. Autor pierwszego tekstu uważa, że A (...). Z kolei autorka drugiego artykułu zwraca uwagę na B (...). Łączy ich przekonanie o C (...)”."
+      },
+      {
+        id: "forma-streszczenie",
+        term: "Streszczenie tekstu",
+        category: "Formy wypowiedzi",
+        definition: "Krótkie przedstawienie najważniejszych treści dłuższego tekstu z pominięciem dygresji, szczegółów i przykładów (abstrahowanie i uogólnianie).",
+        markers: "Krótka forma, język własny (parafraza), zachowanie logicznego układu myśli oryginału, zakaz komentowania.",
+        example: "Zasada: czytasz akapity, wyciągasz myśl przewodnią każdego z nich i łączysz w 3–4 spójne zdania."
+      },
+      {
+        id: "forma-parafraza",
+        term: "Parafraza",
+        category: "Formy wypowiedzi",
+        definition: "Swobodne przekazanie myśli zawartej w cudzym tekście za pomocą własnych słów i odmiennych konstrukcji składniowych, przy zachowaniu pełnej wierności pierwotnego sensu.",
+        markers: "Brak cudzysłowu, zmiana słownictwa (synonimy), zachowanie sensu oryginału.",
+        example: "Cytat: „Kto pod kim dołki kopie, ten sam w nie wpada” ➔ Parafraza: Działanie na czyjąś szkodę najczęściej obraca się przeciwko osobie, która je zaplanowała."
+      },
+      {
+        id: "forma-teza-hipoteza",
+        term: "Teza a Hipoteza",
+        category: "Formy wypowiedzi",
+        definition: "Podstawowe elementy wypowiedzi argumentacyjnej. Teza to twierdzenie pewne, którego nadawca jest przekonany i zamierza go dowieść. Hipoteza to przypuszczenie niepewne, wymagające sprawdzenia w toku rozważań.",
+        markers: "Teza: „Uważam, że...”, „Niewątpliwie...”. Hipoteza: „Wydaje się, że...”, „Można przypuszczać, iż...”.",
+        example: "Teza: „Samotność niszczy psychikę człowieka”. Hipoteza: „Czy samotność zawsze musi prowadzić do nieszczęścia jednostki?”."
+      }
+    ];
+
+    let state = {
+      filter: 'all',
+      catFilter: 'all',
+      mode: 'term-first',
+      currentIndex: 0,
+      isFlipped: false,
+      userScores: JSON.parse(localStorage.getItem('fiszki_jezyk_scores') || '{}'),
+      items: [...languageData]
+    };
+
+    const cardEl = document.getElementById('flashcard');
+    const frontContent = document.getElementById('frontContent');
+    const backContent = document.getElementById('backContent');
+    const frontCategory = document.getElementById('frontCategory');
+    const backCategory = document.getElementById('backCategory');
+    const frontStatus = document.getElementById('frontStatus');
+    const backStatus = document.getElementById('backStatus');
+    const frontIndexHint = document.getElementById('frontIndexHint');
+    const backIndexHint = document.getElementById('backIndexHint');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const countAll = document.getElementById('countAll');
+    const countReview = document.getElementById('countReview');
+    const countKnown = document.getElementById('countKnown');
+    const markKnownBtn = document.getElementById('markKnownBtn');
+    const markReviewBtn = document.getElementById('markReviewBtn');
+    const modeSelect = document.getElementById('modeSelect');
+    const catFilterSelect = document.getElementById('catFilterSelect');
+
+    function saveScores() {
+      localStorage.setItem('fiszki_jezyk_scores', JSON.stringify(state.userScores));
+      updateCounts();
+    }
+
+    function updateCounts() {
+      let known = 0;
+      let review = 0;
+      languageData.forEach(item => {
+        if (state.userScores[item.id] === 'known') known++;
+        else if (state.userScores[item.id] === 'review') review++;
+      });
+      countAll.textContent = languageData.length;
+      countReview.textContent = review;
+      countKnown.textContent = known;
+    }
+
+    function getFilteredList() {
+      return state.items.filter(item => {
+        if (state.filter === 'known' && state.userScores[item.id] !== 'known') return false;
+        if (state.filter === 'review' && state.userScores[item.id] !== 'review') return false;
+        if (state.catFilter !== 'all' && item.category !== state.catFilter) return false;
+        return true;
+      });
+    }
+
+    function getCurrentItem() {
+      const list = getFilteredList();
+      if (list.length === 0) return null;
+      if (state.currentIndex >= list.length) state.currentIndex = 0;
+      if (state.currentIndex < 0) state.currentIndex = list.length - 1;
+      return list[state.currentIndex];
+    }
+
+    function renderCard() {
+      const list = getFilteredList();
+      if (list.length === 0) {
+        frontCategory.textContent = "Koniec";
+        backCategory.textContent = "Koniec";
+        frontStatus.textContent = "-";
+        backStatus.textContent = "-";
+        frontStatus.className = "status-badge";
+        backStatus.className = "status-badge";
+
+        frontContent.innerHTML = `
+          <div class="term-title" style="font-size: 1.5rem; color: var(--text-muted)">Brak haseł w wybranej grupie</div>
+          <p style="margin-top: 10px; color: var(--text-muted)">Zmień filtr statusu lub wybierz inny dział u góry.</p>
+        `;
+        backContent.innerHTML = frontContent.innerHTML;
+        progressBar.style.width = '100%';
+        progressText.textContent = `0 / 0`;
+        return;
+      }
+
+      const item = getCurrentItem();
+      const currentStatus = state.userScores[item.id];
+
+      let statusText = "Do nauki";
+      let statusClass = "status-badge";
+      if (currentStatus === 'known') {
+        statusText = "✓ Opanowane";
+        statusClass = "status-badge known";
+      } else if (currentStatus === 'review') {
+        statusText = "⚠ Do powtórki";
+        statusClass = "status-badge review";
+      }
+
+      frontCategory.textContent = item.category;
+      backCategory.textContent = item.category;
+      frontStatus.textContent = statusText;
+      frontStatus.className = statusClass;
+      backStatus.textContent = statusText;
+      backStatus.className = statusClass;
+
+      const idxStr = `Zagadnienie ${state.currentIndex + 1}/${list.length}`;
+      frontIndexHint.textContent = idxStr;
+      backIndexHint.textContent = idxStr;
+      progressText.textContent = `${state.currentIndex + 1} / ${list.length}`;
+      progressBar.style.width = `${((state.currentIndex + 1) / list.length) * 100}%`;
+
+      markKnownBtn.classList.toggle('active', currentStatus === 'known');
+      markReviewBtn.classList.toggle('active', currentStatus === 'review');
+
+      const fullBackHTML = `
+        <div class="info-box">
+          <div style="font-size: 1.25rem; font-weight: 800; color: #818cf8; margin-bottom: 2px;">${item.term}</div>
+          <div class="category-subtag">📂 Dział: ${item.category}</div>
+
+          <div class="info-card">
+            <strong>💡 Definicja i znaczenie teoretyczne:</strong>
+            <span class="highlight">${item.definition}</span>
+          </div>
+
+          <div class="info-card accent">
+            <strong>🔍 Cechy rozpoznawcze / wskaźniki w tekście:</strong>
+            <span class="highlight">${item.markers}</span>
+          </div>
+
+          <div class="info-card success">
+            <strong>✍️ Przykłady / zastosowanie maturalne:</strong>
+            <span class="highlight">${item.example}</span>
+          </div>
+        </div>
+      `;
+
+      if (state.mode === 'term-first') {
+        frontContent.innerHTML = `
+          <div class="category-subtag">📂 ${item.category}</div>
+          <div class="term-title">${item.term}</div>
+          <div style="color: var(--text-muted); font-size: 0.95rem; max-width: 520px;">
+            Jak brzmi definicja tego pojęcia, jakie są jego cechy rozpoznawcze i przykłady w arkuszu CKE?
+          </div>
+        `;
+        backContent.innerHTML = fullBackHTML;
+      } else {
+        frontContent.innerHTML = `
+          <div style="font-size: 0.82rem; font-weight: 700; color: #818cf8; text-transform: uppercase; margin-bottom: 10px;">Jaki to termin językowy / funkcja / błąd?</div>
+          <div class="info-box" style="max-width: 620px;">
+            <div class="info-card">
+              <strong>Definicja:</strong>
+              ${item.definition}
+            </div>
+            <div class="info-card accent">
+              <strong>Cechy rozpoznawcze:</strong>
+              ${item.markers}
+            </div>
+          </div>
+        `;
+        backContent.innerHTML = `
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Prawidłowy termin:</div>
+          <div class="term-title" style="color: #a855f7; margin-bottom: 8px;">${item.term}</div>
+          ${fullBackHTML}
+        `;
+      }
+    }
+
+    function flipCard() {
+      state.isFlipped = !state.isFlipped;
+      cardEl.classList.toggle('is-flipped', state.isFlipped);
+    }
+
+    function setFlipped(val) {
+      state.isFlipped = val;
+      cardEl.classList.toggle('is-flipped', state.isFlipped);
+    }
+
+    function nextCard() {
+      const list = getFilteredList();
+      if (list.length <= 1) return;
+      setFlipped(false);
+      setTimeout(() => {
+        state.currentIndex = (state.currentIndex + 1) % list.length;
+        renderCard();
+      }, 150);
+    }
+
+    function prevCard() {
+      const list = getFilteredList();
+      if (list.length <= 1) return;
+      setFlipped(false);
+      setTimeout(() => {
+        state.currentIndex = (state.currentIndex - 1 + list.length) % list.length;
+        renderCard();
+      }, 150);
+    }
+
+    function markStatus(type) {
+      const item = getCurrentItem();
+      if (!item) return;
+
+      if (state.userScores[item.id] === type) {
+        delete state.userScores[item.id];
+      } else {
+        state.userScores[item.id] = type;
+        if (type === 'known') triggerConfetti();
+      }
+      saveScores();
+      renderCard();
+    }
+
+    function shuffleCards() {
+      setFlipped(false);
+      setTimeout(() => {
+        for (let i = state.items.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [state.items[i], state.items[j]] = [state.items[j], state.items[i]];
+        }
+        state.currentIndex = 0;
+        renderCard();
+      }, 150);
+    }
+
+    // Events
+    cardEl.addEventListener('click', (e) => {
+      if (e.target.closest('button')) return;
+      flipCard();
+    });
+
+    document.getElementById('flipBtn').addEventListener('click', flipCard);
+    document.getElementById('nextBtn').addEventListener('click', nextCard);
+    document.getElementById('prevBtn').addEventListener('click', prevCard);
+    document.getElementById('shuffleBtn').addEventListener('click', shuffleCards);
+    document.getElementById('markKnownBtn').addEventListener('click', () => markStatus('known'));
+    document.getElementById('markReviewBtn').addEventListener('click', () => markStatus('review'));
+
+    modeSelect.addEventListener('change', (e) => {
+      state.mode = e.target.value;
+      setFlipped(false);
+      renderCard();
+    });
+
+    catFilterSelect.addEventListener('change', (e) => {
+      state.catFilter = e.target.value;
+      state.currentIndex = 0;
+      setFlipped(false);
+      renderCard();
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.filter = btn.dataset.filter;
+        state.currentIndex = 0;
+        setFlipped(false);
+        renderCard();
+      });
+    });
+
+    document.getElementById('themeBtn').addEventListener('click', () => {
+      const current = document.body.getAttribute('data-theme');
+      document.body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    });
+
+    // Modal List
+    const listBtn = document.getElementById('listBtn');
+    const listModal = document.getElementById('listModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalSearch = document.getElementById('modalSearch');
+    const modalList = document.getElementById('modalList');
+
+    function openModal() {
+      renderModalList();
+      listModal.classList.add('active');
+      modalSearch.value = '';
+      modalSearch.focus();
+    }
+
+    function closeModal() {
+      listModal.classList.remove('active');
+    }
+
+    function renderModalList(query = '') {
+      modalList.innerHTML = '';
+      const q = query.toLowerCase().trim();
+      const filtered = languageData.filter(item => {
+        return item.term.toLowerCase().includes(q) ||
+               item.category.toLowerCase().includes(q) ||
+               item.definition.toLowerCase().includes(q) ||
+               item.markers.toLowerCase().includes(q) ||
+               item.example.toLowerCase().includes(q);
+      });
+
+      if (filtered.length === 0) {
+        modalList.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted)">Nie znaleziono pasujących zagadnień.</div>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const itemStatus = state.userScores[item.id];
+        let statusBadge = '';
+        if (itemStatus === 'known') statusBadge = '<span style="color:#10b981; font-size:0.75rem;">✓ Opanowane</span>';
+        else if (itemStatus === 'review') statusBadge = '<span style="color:#f59e0b; font-size:0.75rem;">⚠ Do powtórki</span>';
+
+        const row = document.createElement('div');
+        row.className = 'list-item';
+        row.innerHTML = `
+          <div class="list-item-title">
+            <span>${item.term}</span>
+            <span>${statusBadge}</span>
+          </div>
+          <div class="list-item-category">📂 ${item.category}</div>
+          <div class="list-item-def">${item.definition}</div>
+          <div class="list-item-example"><em>np. ${item.example}</em></div>
+        `;
+        row.addEventListener('click', () => {
+          if (state.filter !== 'all') {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-filter="all"]').classList.add('active');
+            state.filter = 'all';
+          }
+          if (state.catFilter !== 'all') {
+            catFilterSelect.value = 'all';
+            state.catFilter = 'all';
+          }
+          const list = getFilteredList();
+          const targetIndex = list.findIndex(x => x.id === item.id);
+          if (targetIndex !== -1) {
+            state.currentIndex = targetIndex;
+            setFlipped(false);
+            renderCard();
+          }
+          closeModal();
+        });
+        modalList.appendChild(row);
+      });
+    }
+
+    listBtn.addEventListener('click', openModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    listModal.addEventListener('click', (e) => {
+      if (e.target === listModal) closeModal();
+    });
+
+    modalSearch.addEventListener('input', (e) => {
+      renderModalList(e.target.value);
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (listModal.classList.contains('active')) {
+        if (e.key === 'Escape') closeModal();
+        return;
+      }
+
+      if (e.code === 'Space') {
+        e.preventDefault();
+        flipCard();
+      } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        nextCard();
+      } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        prevCard();
+      } else if (e.key === '1') {
+        markStatus('review');
+      } else if (e.key === '2') {
+        markStatus('known');
+      } else if (e.key === 's' || e.key === 'S') {
+        shuffleCards();
+      } else if (e.key === 'l' || e.key === 'L') {
+        openModal();
+      }
+    });
+
+    function triggerConfetti() {
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#6366f1', '#a855f7', '#10b981', '#f59e0b', '#ec4899'];
+
+      for (let i = 0; i < 40; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2 + 50,
+          vx: (Math.random() - 0.5) * 12,
+          vy: (Math.random() - 0.7) * 14,
+          size: Math.random() * 6 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 10,
+          opacity: 1
+        });
+      }
+
+      let frame = 0;
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.35;
+          p.rotation += p.vRot;
+          p.opacity -= 0.018;
+
+          if (p.opacity > 0) {
+            alive = true;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rotation * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = Math.max(0, p.opacity);
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+            ctx.restore();
+          }
+        });
+
+        frame++;
+        if (alive && frame < 90) {
+          requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      animate();
+    }
+
+    updateCounts();
+    renderCard();
+  </script>
+</body>
+</html>

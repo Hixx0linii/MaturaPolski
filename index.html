@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="pl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matura z Języka Polskiego – Baza Wiedzy & Interaktywne Fiszki</title>
+  <style>
+    :root {
+      --bg-body: #0b0f19;
+      --bg-surface: #131b2e;
+      --bg-surface-elevated: #1a243d;
+      --bg-card: #162036;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(99, 102, 241, 0.4);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --primary-glow: rgba(99, 102, 241, 0.25);
+      --accent: #a855f7;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --info: #06b6d4;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="light"] {
+      --bg-body: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f1f5f9;
+      --bg-card: #ffffff;
+      --border-color: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(99, 102, 241, 0.4);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --primary: #4f46e5;
+      --primary-light: #6366f1;
+      --primary-glow: rgba(79, 70, 229, 0.15);
+      --accent: #9333ea;
+      --success: #059669;
+      --warning: #d97706;
+      --info: #0891b2;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 700;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-text p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--primary);
+    }
+
+    main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: var(--primary-light);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, var(--text-main) 60%, var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 32px;
+    }
+
+    /* Quick stats */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-hover);
+    }
+
+    .stat-num {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--primary-light);
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    /* Search & Filter Bar */
+    .search-section {
+      margin-bottom: 40px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-wrapper {
+      flex: 1;
+      position: relative;
+      min-width: 280px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px 20px 14px 44px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    /* Section Headers */
+    .category-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 40px 0 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .category-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    .category-count {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      background: var(--bg-surface-elevated);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    /* Resource Cards Grid */
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 24px;
+    }
+
+    .resource-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+      position: relative;
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+    }
+
+    .resource-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--card-color-1, var(--primary)), var(--card-color-2, var(--accent)));
+      opacity: 0.8;
+      transition: var(--transition);
+    }
+
+    .resource-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-hover);
+      box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.4);
+    }
+
+    .resource-card:hover::before {
+      height: 6px;
+      opacity: 1;
+    }
+
+    .card-top {
+      margin-bottom: 16px;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .card-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--primary-light);
+    }
+
+    .card-count {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    .card-tag {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--bg-surface-elevated);
+      color: var(--text-dim);
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 18px;
+      margin-top: 18px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .open-action {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--primary-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.2s ease;
+    }
+
+    .resource-card:hover .open-action {
+      gap: 10px;
+      color: #ffffff;
+    }
+
+    [data-theme="light"] .resource-card:hover .open-action {
+      color: var(--primary);
+    }
+
+    /* Special Note Card Highlight */
+    .resource-card.highlight-note {
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.06) 0%, var(--bg-card) 100%);
+    }
+
+    .resource-card.highlight-note:hover {
+      box-shadow: 0 16px 36px -12px rgba(168, 85, 247, 0.25);
+    }
+
+    /* GitHub Guide Section */
+    .github-box {
+      margin-top: 60px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .github-box-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .github-icon-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .github-box h3 {
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    .github-box p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      max-width: 800px;
+    }
+
+    .step-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .step-item {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+
+    .step-num {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      text-align: center;
+      background: var(--primary);
+      color: #ffffff;
+      border-radius: 50%;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .step-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .step-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.85em;
+      color: #e2e8f0;
+    }
+
+    [data-theme="light"] code {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      background: var(--bg-surface);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h2 {
+        font-size: 1.85rem;
+      }
+      .resources-grid {
+        grid-template-columns: 1fr;
+      }
+      .github-box {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">🇵🇱</div>
+        <div class="brand-text">
+          <h1>Matura Polski 2024 / 2025</h1>
+          <p>Kompleksowe Centrum Powtórek Maturalnych</p>
+        </div>
+      </a>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" title="Zmień motyw">
+          <span id="themeIcon">☀️</span>
+          <span id="themeText">Jasny motyw</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-badge">🎓 Formuła 2023 • Poziom Podstawowy & Rozszerzony</div>
+      <h2>Kompletna Baza Fiszek i Notatek Maturalnych</h2>
+      <p>Wszystkie niezbędne zagadnienia do egzaminu pisemnego i ustnego: bohaterowie, epoki, symbole, frazeologia, stylistyka oraz wzorcowe modele wprowadzania kontekstów.</p>
+    </section>
+
+    <!-- Quick Stats -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-num">10</div>
+        <div class="stat-label">Modułów Nauki</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">850+</div>
+        <div class="stat-label">Interaktywnych Kart</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">600</div>
+        <div class="stat-label">Postaci ze 107 Lektur</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Zgodności z CKE</div>
+      </div>
+    </div>
+
+    <!-- Search and Filter Bar -->
+    <div class="search-section">
+      <div class="search-wrapper">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Szukaj zagadnienia, lektury, modułu (np. Wokulski, barok, vanitas)...">
+      </div>
+      <div class="filter-pills">
+        <button class="filter-btn active" data-filter="all">Wszystko</button>
+        <button class="filter-btn" data-filter="lektury">Lektury & Motywy</button>
+        <button class="filter-btn" data-filter="epoki">Epoki & Myśl</button>
+        <button class="filter-btn" data-filter="jezyk">Język & Test</button>
+        <button class="filter-btn" data-filter="wypracowanie">Wypracowanie</button>
+      </div>
+    </div>
+
+    <!-- 1. Wypracowanie & Konteksty (Special Top Highlight) -->
+    <div class="category-block" data-category="wypracowanie">
+      <div class="category-header">
+        <div class="category-title">
+          <span>✍️</span> Wypracowanie Maturalne & Formy Pisemne CKE
+        </div>
+        <div class="category-count">2 Notatki Kompendium</div>
+      </div>
+
+      <div class="resources-grid">
+        <a href="Fiszki/notatka-konteksty-w-wypracowaniu.html" class="resource-card highlight-note" style="--card-color-1: #a855f7; --card-color-2: #ec4899;">
+          <div class="card-top">
+            <div class="card-meta">
+              <span class="card-badge">Interaktywna Notatka</span>
+              <span class="card-count">4 Modele + Kryteria CKE</span>
+            </div>
+            <h3 class="card-title">Jak Poprawnie Wprowadzać Konteksty w Wypracowaniu</h3>
+            <p class="card-desc">Kompletny przewodnik zdobywania 2/2 pkt za kontekst. 4 modele argumentacji (szczegół-ogół, podobieństwo, przyczynowo-skutkowy, ponadczasowość), interaktywne rozbicie akapitów na czynniki, zintegrowany słowniczek trudnych pojęć oraz bank zwrotów łączących do natychmiastowego skopiowania.</p>
+            <div class="card-tags">
+              <span class="card-tag">#RozbicieAkapitu</span>
+              <span class="card-tag">#Słowniczek</span>
+              <span class="card-tag">#KryteriaCKE</span>
+              <span class="card-tag">#BankZwrotów</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span style="font-size: 0.8rem; color: var(--text-dim);">Format: Notatka analityczna</span>
+            <span class="open-action">Otwórz notatkę ➔</span>
+          </div>
+        </a>
+
+        <!-- Notatka Syntetyzująca Card -->
+        <a href="Fiszki/notatka-syntetyzujaca.html" class="resource-card highlight-note" style="--card-color-1: #0ea5e9; --card-color-2: #6366f1;">
+          <div class="card-top">
+            <div class="card-meta">
+              <span class="card-badge">Zadanie za 4 Pkt CKE</span>
+              <span class="card-count">60–90 słów • Schemat & Licznik</span>
+            </div>
+            <h3 class="card-title">Jak Napisać Notatkę Syntetyzującą? (Przewodnik CKE)</h3>
+            <p class="card-desc">Kompletny poradnik zdobywania 4/4 pkt. Żelazna różnica między syntezą a streszczeniem, 4-elementowa konstrukcja, autentyczne przykłady z matur 2023 i 2024 z kolorystycznym rozbiciem, 2 gotowe szablony zdań, bank spoiw logicznych oraz wbudowany interaktywny licznik słów CKE.</p>
+            <div class="card-tags">
+              <span class="card-tag">#NotatkaSyntetyzująca</span>
+              <span class="card-tag">#ZadanieZa4Pkt</span>
+              <span class="card-tag">#LicznikSłówCKE</span>
+              <span class="card-tag">#Szablony</span>
+              <span class="card-tag">#PrzykładyZMatury</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span style="font-size: 0.8rem; color: var(--text-dim);">Format: Poradnik + Narzędzie live</span>
+            <span class="open-action">Opanuj syntezę ➔</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 2. Lektury, Postacie i Motywy -->
+    <div class="category-block" data-category="lektury">
+      <div class="category-header">
+        <div class="category-title">
+          <span>📚</span> Lektury Obowiązkowe, Postacie i Motywy
+        </div>
+        <div class="category-count">3 Zestawy Fiszek</div>
+      </div>
+
+      <div class="resources-grid">
+        <!-- Bohaterowie lektur -->
+        <a href="Fiszki/fiszki-bohaterowie-lektur.html" class="resource-card" style="--card-color-1: #3b82f6; --card-color-2: #06b6d4;">
+          <div class="card-top">
+            <div class="card-meta">
+              <span class="card-badge">Fiszki Interaktywne</span>
+              <span class="card-count">600 bohaterów • 107 lektur</span>
+            </div>
+            <h3 class="card-title">Bohaterowie Lektur Obowiązkowych</h3>
+            <p class="card-desc">Pełna baza bohaterów od Antyku do Współczesności, w tym lektury ze szkoły podstawowej i gwiazdkowe. Dwustopniowy filtr epok i lektur, wyszukiwarka live oraz 2 tryby nauki („Bohater ➔ Cechy” i „Kim jestem?”).</p>
+            <div class="card-tags">
+              <span class="card-tag">#Wokulski</span>
+              <span class="card-tag">#Raskolnikow</span>
+              <span class="card-tag">#Kordian</span>
+              <span class="card-tag">#Dziady</span>
+              <span class="card-tag">#Lalka</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span style="font-size: 0.8rem; color: var(--text-dim);">Tryb: Fiszki 3D + Quiz</span>
+            <span class="open-action">Ucz się postaci ➔</span>
+          </div>
+        </a>
+
+        <!-- Symbole w lekturach -->
+        <a href="Fiszki/fiszki-symbole-w-lekturach.html" class="resource-card" style="--card-color-1: #8b5cf6; --card-color-2: #ec4899;">
+          <div class="card-top">
+            <div class="card-meta">
+              <span class="card-badge">Fiszki Interaktywne</span>
+              <span class="card-count">58 symboli</span>
+            </div>
+            <h3 class="card-title">Kluczowe Symbole w Lekturach i Kulturze</h3>
+            <p class="card-desc">Złoty róg, czapka z piór, chocholi taniec, bronowicka chata, lalka, kamień, labirynt, archanioł, drzewo i wiele innych. Kontekst lekturowy, znaczenie dosłowne i symboliczne.</p>
+            <div class="card-tags">
+              <span class="card-tag">#Wesele</span>
+              <span class="card-tag">#Dziady</span>
+              <span class="card-tag">#Biblia</span>
+              <span class="card-tag">#Mitologia</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span style="font-size: 0.8rem; color: var(--text-dim);">Tryb: Fiszki 3D</span>
+            <span class="open-action">Odkryj symbole ➔</span>
+          </div>
+        </a>
+
+        <!-- Motywy literackie -->
+        <a href="Fiszki/fiszki-motywy-literackie.html" class="resource-card" style="--card-color-1: #10b981; --card-color-2: #3b82f6;">
+          <div class="card-top">
+            <div class="card-meta">
+              <span class="card-badge">Fiszki Interaktywne</span>
+              <span class="card-count">30 motywów</span>
+            </div>
+            <h3 class="card-title">Główne Motywy Literackie</h3>
+            <p class="card-desc">Homo viator, cierpienie, bunt prometejski, metamorfoza, vanitas, taniec śmierci, zbrodnia i kara, praca u podstaw, ojczyzna, theatrum mundi i inne kluczowe toposy z powiązanymi lekturami i argumentacją.</p>
+            <div class="card-tags">
+              <span class="card-tag">#HomoViator</span>
+              <span class="card-tag">#Bunt</span>
+              <span class="card-tag">#Cierpienie</span>
+              <span class="card-tag">#Patriotyzm</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span style="font-size: 0.8rem; color: var(--text-dim);">Tryb: Fiszki 3D</span>
+            <span class="open-action">Powtórz motywy ➔</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 3. Epoki, Filozofia i Pojęcia -->
+    <div class="category-block" data-category="epoki">
+      <div class="category-header">
+        <div class="category-title">
+          <span>🏛️</span> Epoki Literackie, Filozofia i Nurty
+        </div>
+        <div class="category-count">2 Zestawy Fiszek</div>
+      </div>
+
+      <div class="resources-grid">
+        <!-- Epoki literackie -->
+        <a href="Fiszki/fiszki-epoki-literackie.html" class="resource-card" style="--card-color-1: #f59e0b; --card-color-2: #ef4444;">
+          <div class="card-top">
+            <div class="card-meta">
+              <span class="card-badge">Fiszki Interaktywne</span>
+              <span class="card-count">10 epok</span>
+            </div>
+            <h3 class="card-title">Epoki Literackie (Od Antyku do Współczesności)</h3>
+            <p class="card-desc">Ramy czasowe w Europie i w Polsce, etymologia nazwy, naczelne hasła, dominujące prądy filozoficzne, wzorce osobowe oraz sztandarowe dzieła każdej epoki.</p>
+            <div class="card-tags">
+              <span class="card-tag">#RamyCzasowe</span>
+              <span class="card-tag">#Idee</span>
+              <span class="card-tag">#Filozofia</span>
+              <span class="card-tag">#WzorceOsobowe</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span style="font-size: 0.8rem; color: var(--text-dim);">Tryb: Fiszki 3D</span>
+            <span class="open-action">Poznaj epoki ➔</span>
+          </div>
+        </a>
+
+        <!-- Pojęcia z epok -->
+        <a href="Fiszki/fiszki-pojecia-z-epok.html" class="resource-card" style="--card-color-1: #6366f1; --card-color-2: #a855f7;">
+          <div class="card-top">
+            <div class="card-meta">
+              <span class="card-badge">Fiszki Interaktywne</span>
+              <span class="card-count">45 pojęć</span>
+            </div>
+            <h3 class="card-title">Kluczowe Pojęcia i Filozofie z Epok</h3>
+            <p class="card-desc">Katharsis, fatum, teocentryzm, memento mori, stoicyzm, sarmatyzm, konceptyzm, deizm, mesjanizm, winkelriedyzm, utylitaryzm, dekadentyzm, katastrofizm i inne.</p>
+            <div class="card-tags">
+              <span class="card-tag">#Teocentryzm</span>
+              <span class="card-tag">#Mesjanizm</span>
+              <span class="card-tag">#Egzystencjalizm</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span style="font-size: 0.8rem; color: var(--text-dim);">Tryb: Fiszki 3D</span>
+            <span class="open-action">Opanuj pojęcia ➔</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 4. Język, Test CKE i Frazeologia -->
+    <div class="category-block" data-category="jezyk">
+      <div class="category-header">
+        <div class="category-title">
+          <span>📖</span> Nauka o Języku, Środki Stylistyczne i Frazeologia
+        </div>
+        <div class="category-count">3 Zestawy Fiszek</div>
+      </div>
+
+      <div class="resources-grid">
+        <!-- Nauka o języku -->
+        <a href="Fiszki/fiszki-nauka-o-jezyku.html" class="resource-card" style="--card-color-1: #0ea5e9; --card-color-2: #6366f1;">
+          <div class="card-top">
+            <div class="card-meta">
+              <span class="card-badge">Fiszki do Testu CKE</span>
+              <span class="card-count">40 kart</span>
+            </div>
+            <h3 class="card-title">Nauka o Języku i Formy Wypowiedzi</h3>
+            <p class="card-desc">Pewniaki do części testowej: funkcje języka (poznawcza, impresywna, ekspresywna, poetycka, fatyczna, metajęzykowa), stylizacja językowa, błędy językowe, manipulacja i perswazja oraz zasady notatki syntetyzującej (60–90 słów).</p>
+            <div class="card-tags">
+              <span class="card-tag">#FunkcjeJęzyka</span>
+              <span class="card-tag">#NotatkaSyntetyzująca</span>
+              <span class="card-tag">#Błędy</span>
+              <span class="card-tag">#Manipulacja</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span style="font-size: 0.8rem; color: var(--text-dim);">Tryb: Fiszki 3D + Przykłady</span>
+            <span class="open-action">Ćwicz do testu ➔</span>
+          </div>
+        </a>
+
+        <!-- Środki stylistyczne -->
+        <a href="Fiszki/fiszki-srodki-stylistyczne.html" class="resource-card" style="--card-color-1: #ec4899; --card-color-2: #f43f5e;">
+          <div class="card-top">
+            <div class="card-meta">
+              <span class="card-badge">Fiszki Interaktywne</span>
+              <span class="card-count">34 środki</span>
+            </div>
+            <h3 class="card-title">Środki Stylistyczne i Retoryczne</h3>
+            <p class="card-desc">Tropy stylistyczne (metafora, metonimia, synekdoka, oksymoron, animizacja, personifikacja) oraz figury retoryczne (inwersja, anafora, epifora, antyteza, gradacja, elipsa, apostrofa) z ich funkcjami w tekście.</p>
+            <div class="card-tags">
+              <span class="card-tag">#Metafora</span>
+              <span class="card-tag">#Oksymoron</span>
+              <span class="card-tag">#Inwersja</span>
+              <span class="card-tag">#FunkcjeŚrodków</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span style="font-size: 0.8rem; color: var(--text-dim);">Tryb: Fiszki 3D</span>
+            <span class="open-action">Sprawdź środki ➔</span>
+          </div>
+        </a>
+
+        <!-- Frazeologizmy -->
+        <a href="Fiszki/fiszki-zwiazki-frazeologiczne.html" class="resource-card" style="--card-color-1: #14b8a6; --card-color-2: #059669;">
+          <div class="card-top">
+            <div class="card-meta">
+              <span class="card-badge">Fiszki Interaktywne</span>
+              <span class="card-count">58 frazeologizmów</span>
+            </div>
+            <h3 class="card-title">Związki Frazeologiczne (Biblia & Mitologia)</h3>
+            <p class="card-desc">28 frazeologizmów mitologicznych (puszka Pandory, pięta Achillesa, węzeł gordyjski...) i 30 biblijnych (hiobowa wieść, judaszowe srebrniki, sól ziemi, manna z nieba...). Źródło, znaczenie dosłowne i przenośne.</p>
+            <div class="card-tags">
+              <span class="card-tag">#Mitologia</span>
+              <span class="card-tag">#Biblia</span>
+              <span class="card-tag">#Frazeologia</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span style="font-size: 0.8rem; color: var(--text-dim);">Tryb: Fiszki 3D</span>
+            <span class="open-action">Ucz się frazeologizmów ➔</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- GitHub Pages Guide Box -->
+    <section class="github-box">
+      <div class="github-box-header">
+        <div class="github-icon-circle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Jak uruchomić tę stronę w 1 minutę na GitHub Pages (100% za darmo)</h3>
+          <p>Wszystkie pliki HTML są w 100% samowystarczalne (nie wymagają instalacji, serwera ani połączenia z internetem). Możesz je wrzucić na GitHub i mieć stały dostęp ze smartfona, tabletu i laptopa!</p>
+        </div>
+      </div>
+
+      <div class="step-list">
+        <div class="step-item">
+          <span class="step-num">1</span>
+          <div class="step-title">Stwórz repozytorium</div>
+          <div class="step-desc">Zaloguj się na <a href="https://github.com" target="_blank" style="color: var(--primary-light);">github.com</a>, kliknij <strong>New repository</strong> (np. o nazwie <code>matura-polski</code>) i ustaw jako <em>Public</em>.</div>
+        </div>
+
+        <div class="step-item">
+          <span class="step-num">2</span>
+          <div class="step-title">Wrzuć ten folder</div>
+          <div class="step-desc">Przeciągnij całą zawartość tego folderu (w tym plik <code>index.html</code> i podkatalog <code>Fiszki/</code>) do repozytorium i kliknij <em>Commit changes</em>.</div>
+        </div>
+
+        <div class="step-item">
+          <span class="step-num">3</span>
+          <div class="step-title">Włącz GitHub Pages</div>
+          <div class="step-desc">W repozytorium przejdź do: <code>Settings ➔ Pages ➔ Source: Deploy from a branch</code>, wybierz gałąź <code>main</code> oraz folder <code>/ (root)</code> i kliknij <strong>Save</strong>.</div>
+        </div>
+
+        <div class="step-item">
+          <span class="step-num">4</span>
+          <div class="step-title">Gotowe! Masz stronę online</div>
+          <div class="step-desc">Po ~30 sekundach Twoja strona będzie dostępna pod adresem: <code>https://twój-login.github.io/matura-polski/</code>!</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Projekt przygotowany do egzaminu maturalnego z języka polskiego (Formuła 2023). Materiał zgodny z wymaganiami CKE.</p>
+  </footer>
+
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+
+    function initTheme() {
+      const saved = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+      updateThemeBtn(saved);
+    }
+
+    function updateThemeBtn(theme) {
+      if (theme === 'light') {
+        themeIcon.textContent = '🌙';
+        themeText.textContent = 'Ciemny motyw';
+      } else {
+        themeIcon.textContent = '☀️';
+        themeText.textContent = 'Jasny motyw';
+      }
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateThemeBtn(next);
+    });
+
+    initTheme();
+
+    // Filter Buttons
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const categoryBlocks = document.querySelectorAll('.category-block');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+
+        categoryBlocks.forEach(block => {
+          if (filter === 'all' || block.dataset.category === filter) {
+            block.style.display = 'block';
+          } else {
+            block.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Live Search
+    const searchInput = document.getElementById('searchInput');
+    const resourceCards = document.querySelectorAll('.resource-card');
+
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase().trim();
+
+      resourceCards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (!term || text.includes(term)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Hide category block if no cards inside match
+      categoryBlocks.forEach(block => {
+        const visibleCards = block.querySelectorAll('.resource-card:not([style*="display: none"])');
+        if (visibleCards.length === 0 && term) {
+          block.style.display = 'none';
+        } else if (!term) {
+          const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+          if (activeFilter === 'all' || block.dataset.category === activeFilter) {
+            block.style.display = 'block';
+          }
+        } else {
+          block.style.display = 'block';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiszki – Związki Frazeologiczne (Mitologiczne i Biblijne)</title>
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #090e1f 0%, #171536 50%, #090e1f 100%);
+      --card-bg: #182238;
+      --card-border: rgba(255, 255, 255, 0.12);
+      --card-front-glow: rgba(99, 102, 241, 0.25);
+      --card-back-glow: rgba(168, 85, 247, 0.25);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --badge-bg: rgba(99, 102, 241, 0.2);
+      --badge-text: #a5b4fc;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e0e7ff 50%, #f8fafc 100%);
+      --card-bg: #ffffff;
+      --card-border: rgba(0, 0, 0, 0.08);
+      --card-front-glow: rgba(99, 102, 241, 0.15);
+      --card-back-glow: rgba(168, 85, 247, 0.15);
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --badge-bg: rgba(99, 102, 241, 0.12);
+      --badge-text: #3730a3;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 40px;
+      overflow-x: hidden;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      width: 100%;
+      max-width: 820px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .title-group h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      background: linear-gradient(to right, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .title-group p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    button.icon-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button.icon-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+
+    .controls-wrapper {
+      width: 100%;
+      max-width: 820px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tabs-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      background: rgba(15, 23, 42, 0.4);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      gap: 4px;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+    }
+
+    .select-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .custom-select {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 7px 12px;
+      border-radius: 10px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .progress-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .progress-bar-bg {
+      flex: 1;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #6366f1, #a855f7);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    /* Flashcard Stage */
+    .stage {
+      width: 100%;
+      max-width: 760px;
+      min-height: 460px;
+      perspective: 1400px;
+      margin-bottom: 24px;
+      user-select: none;
+    }
+
+    .card {
+      width: 100%;
+      min-height: 460px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      border-radius: 24px;
+    }
+
+    .card.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      min-height: 460px;
+      height: 100%;
+      backface-visibility: hidden !important;
+      -webkit-backface-visibility: hidden !important;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 30px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+      box-sizing: border-box;
+      overflow-y: auto;
+      transform-style: preserve-3d;
+      transition: opacity 0.3s ease;
+    }
+
+    .card-face.front {
+      transform: rotateY(0deg) translateZ(1px);
+      box-shadow: 0 0 35px var(--card-front-glow);
+    }
+
+    .card-face.back {
+      transform: rotateY(180deg) translateZ(1px);
+      box-shadow: 0 0 35px var(--card-back-glow);
+    }
+
+    /* Wykluczenie odbicia lustrzanego */
+    .card:not(.is-flipped) .card-face.back {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .card.is-flipped .card-face.front {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .card:not(.is-flipped) .card-face.front {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .card.is-flipped .card-face.back {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .badge-origin {
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 5px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+    }
+
+    .status-badge.known {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+    }
+
+    .status-badge.review {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      padding: 10px 0;
+    }
+
+    .phrase-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 8px;
+      color: #818cf8;
+    }
+
+    .origin-tag {
+      display: inline-block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #c084fc;
+      margin-bottom: 14px;
+    }
+
+    .info-box {
+      width: 100%;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .info-card {
+      background: rgba(255, 255, 255, 0.04);
+      border-left: 3px solid var(--primary);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .info-card.accent {
+      border-left-color: #a855f7;
+    }
+
+    .info-card.success {
+      border-left-color: #10b981;
+    }
+
+    .info-card strong {
+      display: block;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #a5b4fc;
+      margin-bottom: 2px;
+    }
+
+    .highlight {
+      color: #f1f5f9;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--card-border);
+      padding-top: 12px;
+      margin-top: 10px;
+    }
+
+    .flip-hint {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      opacity: 0.8;
+    }
+
+    .actions-bar {
+      width: 100%;
+      max-width: 760px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn-group, .status-btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-success {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+
+    .btn-success:hover, .btn-success.active {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .btn-warning {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+    }
+
+    .btn-warning:hover, .btn-warning.active {
+      background: var(--warning);
+      color: #fff;
+    }
+
+    .keyboard-shortcuts {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .kbd {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-window {
+      background: #1e293b;
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 820px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+
+    [data-theme="light"] .modal-window {
+      background: #ffffff;
+    }
+
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .modal-body {
+      padding: 16px 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .search-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      outline: none;
+    }
+
+    [data-theme="light"] .search-input {
+      background: #f1f5f9;
+    }
+
+    .items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .list-item {
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.03);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .list-item:hover {
+      background: rgba(99, 102, 241, 0.1);
+      border-color: var(--primary);
+    }
+
+    .list-item-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      color: #818cf8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .list-item-origin {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #c084fc;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .list-item-meaning {
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .list-item-context {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    canvas#confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    @media (max-width: 640px) {
+      .stage, .card, .card-face {
+        min-height: 520px;
+      }
+      .phrase-title {
+        font-size: 1.6rem;
+      }
+      .actions-bar {
+        justify-content: center;
+      }
+      .nav-btn-group, .status-btn-group {
+        width: 100%;
+        justify-content: center;
+      }
+      .keyboard-shortcuts {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <canvas id="confetti"></canvas>
+
+  <header>
+    <div class="title-group">
+      <h1>Związki Frazeologiczne</h1>
+      <p>Pełna baza frazeologizmów biblijnych i mitologicznych do matury</p>
+    </div>
+    <div class="header-actions">
+      <a href="../index.html" class="icon-btn" title="Powrót do menu głównego" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem;">🏠</a>
+      
+      <button class="icon-btn" id="listBtn" title="Spis wszystkich frazeologizmów (L)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="icon-btn" id="shuffleBtn" title="Pomieszaj frazeologizmy (S)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
+      </button>
+      <button class="icon-btn" id="themeBtn" title="Przełącz tryb jasny/ciemny">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="controls-wrapper">
+    <div class="tabs-row">
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">Wszystkie (<span id="countAll">0</span>)</button>
+        <button class="filter-btn" data-filter="review">Do powtórki (<span id="countReview">0</span>)</button>
+        <button class="filter-btn" data-filter="known">Opanowane (<span id="countKnown">0</span>)</button>
+      </div>
+
+      <div class="select-group">
+        <select class="custom-select" id="originFilterSelect">
+          <option value="all">Wszystkie źródła</option>
+          <option value="Mitologia">Mitologia grecka i rzymska</option>
+          <option value="Biblia">Biblia (Stary i Nowy Testament)</option>
+        </select>
+
+        <select class="custom-select" id="modeSelect">
+          <option value="term-first">Przód: Frazeologizm ➔ Tył: Znaczenie i geneza</option>
+          <option value="def-first">Przód: Znaczenie ➔ Tył: Jaki to frazeologizm?</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+      <div class="progress-text" id="progressText">1 / 58</div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="card" id="flashcard">
+      <!-- FRONT -->
+      <div class="card-face front">
+        <div class="card-top">
+          <span class="badge-origin" id="frontOrigin">POCHODZENIE</span>
+          <span class="status-badge" id="frontStatus">Do nauki</span>
+        </div>
+        <div class="card-content" id="frontContent">
+          <!-- Dynamic -->
+        </div>
+        <div class="card-footer">
+          <div class="flip-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+            Kliknij lub naciśnij Spację, aby obrócić
+          </div>
+          <span id="frontIndexHint">Karta 1/58</span>
+        </div>
+      </div>
+
+      <!-- BACK -->
+      <div class="card-face back">
+        <div class="card-top">
+          <span class="badge-origin" id="backOrigin">POCHODZENIE</span>
+          <span class="status-badge" id="backStatus">Do nauki</span>
+        </div>
+        <div class="card-content" id="backContent">
+          <!-- Dynamic -->
+        </div>
+        <div class="card-footer">
+          <div class="flip-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+            Kliknij lub Spacja, aby odwrócić
+          </div>
+          <span id="backIndexHint">Karta 1/58</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions-bar">
+    <div class="nav-btn-group">
+      <button class="btn" id="prevBtn" title="Poprzednia (Strzałka w lewo)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Wstecz
+      </button>
+      <button class="btn btn-primary" id="flipBtn" title="Obróć kartę (Spacja)">
+        Obróć
+      </button>
+      <button class="btn" id="nextBtn" title="Następna (Strzałka w prawo)">
+        Dalej
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+
+    <div class="status-btn-group">
+      <button class="btn btn-warning" id="markReviewBtn" title="Oznacz do powtórki (Klawisz 1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        Do powtórki
+      </button>
+      <button class="btn btn-success" id="markKnownBtn" title="Oznacz jako opanowane (Klawisz 2)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Umiem to!
+      </button>
+    </div>
+  </div>
+
+  <div class="keyboard-shortcuts">
+    Skróty: <span class="kbd">Spacja</span> obrót &bull; <span class="kbd">&larr;</span> / <span class="kbd">&rarr;</span> nawigacja &bull; <span class="kbd">1</span> powtórz &bull; <span class="kbd">2</span> umiem &bull; <span class="kbd">S</span> losuj &bull; <span class="kbd">L</span> lista
+  </div>
+
+  <!-- Modal list of phrases -->
+  <div class="modal-overlay" id="listModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h2>Spis frazeologizmów mitologicznych i biblijnych</h2>
+        <button class="icon-btn" id="closeModalBtn" title="Zamknij (Esc)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="search-input" id="modalSearch" placeholder="Szukaj związku, znaczenia lub genezy...">
+        <div class="items-list" id="modalList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const phrasesData = [
+      // FRAZEOLOGIZMY MITOLOGICZNE (28)
+      {
+        id: "mit-pieta-achillesa",
+        term: "Pięta Achillesa",
+        origin: "Mitologia",
+        source: "Mit o wojnie trojańskiej i Achillesie",
+        genesis: "Matka Achillesa, Tetyda, kąpała go w wodach Styksu, by zapewnić mu nieśmiertelność. Trzymała go za piętę, która pozostała jedynym nieodpornym na ciosy miejscem na jego ciele. Zginął ugodzony w nią zatrutą strzałą Parysa.",
+        meaning: "Słaby, czuły punkt kogoś lub czegoś; jedyna wada w skądinąd doskonałym planie lub człowieku.",
+        example: "„Gramatyka historyczna to moja prawdziwa pięta Achillesa na egzaminie”."
+      },
+      {
+        id: "mit-kon-trojanski",
+        term: "Koń trojański",
+        origin: "Mitologia",
+        source: "Mit o zdobyciu Troi (Homer – Iliada/Odyseja)",
+        genesis: "Grecy pod wodzą Odyseusza podstępem zostawili pod murami Troi wielkiego drewnianego konia, w którym ukryli się wojownicy. Trojanie wciągnęli go do miasta, co doprowadziło do rzezi i upadku Troi.",
+        meaning: "Niebezpieczny, podstępny dar niosący zgubę; ukryte zagrożenie udające prezent lub pomoc.",
+        example: "„Ten darmowy program okazał się koniem trojańskim, który zainfekował komputer”."
+      },
+      {
+        id: "mit-puszka-pandory",
+        term: "Puszka Pandory",
+        origin: "Mitologia",
+        source: "Mit o Prometeuszu i Pandorze",
+        genesis: "Bogowie zesłali na ziemię piękną Pandorę z glinianą szczelnie zamkniętą puszką. Z ciekawości otworzyła wieko, wypuszczając na świat wszystkie nieszczęścia, choroby, cierpienia i zbrodnie.",
+        meaning: "Źródło niekończących się nieszczęść, kłopotów, problemów i klęsk.",
+        example: "„Podjęcie tego tematu na zebraniu otworzyło prawdziwą puszkę Pandory”."
+      },
+      {
+        id: "mit-nic-ariadny",
+        term: "Nić Ariadny",
+        origin: "Mitologia",
+        source: "Mit o Tezeuszu i Minotaurze",
+        genesis: "Królewna kreteńska Ariadna podarowała Tezeuszowi kłębek nici. Rozwijając go w labiryncie Minotaura, bohater zdołał po zabiciu potwora odnaleźć drogę powrotną do wyjścia.",
+        meaning: "Wskazówka, pomocna dłoń lub sposób pozwalający wybrnąć z niezwykle zawiłej, trudnej sytuacji.",
+        example: "„Rada profesora stała się dla mnie nicią Ariadny w gąszczu przepisów prawnych”."
+      },
+      {
+        id: "mit-syzyfowa-praca",
+        term: "Syzyfowa praca",
+        origin: "Mitologia",
+        source: "Mit o Syzyfie",
+        genesis: "Syzyf za zdradzanie tajemnic bogów został skazany w Tartarze na wieczne wtaczanie na szczyt góry wielkiego głazu, który tuż przed wierzchołkiem zawsze staczał się w dół.",
+        meaning: "Praca ciężka, bezowocna, daremna, nieprzynosząca żadnych rezultatów i niemająca końca.",
+        example: "„Sprzątanie pokoju przy małych dzieciach to czysta syzyfowa praca”."
+      },
+      {
+        id: "mit-stajnia-augiasza",
+        term: "Stajnia Augiasza",
+        origin: "Mitologia",
+        source: "Mit o 12 pracach Heraklesa",
+        genesis: "Król Elidy Augiasz posiadał olbrzymie stada bydła, a jego stajnie nie były sprzątane przez 30 lat. Herakles oczyścił je w jeden dzień, kierując przez nie nurt dwóch rzek.",
+        meaning: "Miejsce skrajnie zaniedbane, potworny bałagan lub nagromadzenie wielkich zaległości wymagających radykalnych porządków.",
+        example: "„Nowy dyrektor musiał najpierw uprzątnąć tę stajnię Augiasza w dziale finansów”."
+      },
+      {
+        id: "mit-rog-obfitosci",
+        term: "Róg obfitości",
+        origin: "Mitologia",
+        source: "Mit o dzieciństwie Zeusa na Krecie",
+        genesis: "Koza Amalteja karmiła małego Zeusa mlekiem. Gdy złamała róg, Zeus pobłogosławił go, sprawiając, że napełniał się bez końca wszystkim, czego zapragnął jego posiadacz.",
+        meaning: "Symbol niewyczerpanego bogactwa, dostatku, urodzaju i wszelkich dóbr materialnych.",
+        example: "„Odkrycie złóż ropy stało się dla tego kraju prawdziwym rogiem obfitości”."
+      },
+      {
+        id: "mit-ikarowy-lot",
+        term: "Ikarowy lot",
+        origin: "Mitologia",
+        source: "Mit o Dedalu i Ikarze",
+        genesis: "Ikar uciekając z Krety na skrzydłach z piór i wosku, uniesiony zachwytem wzbił się zbyt blisko słońca. Żar stopił wosk, a Ikar runął do morza i zginął.",
+        meaning: "Śmiałe, wzniosłe, lecz lekkomyślne przedsięwzięcie, które kończy się tragicznie z powodu braku rozwagi.",
+        example: "„Jego kariera w wielkim biznesie okazała się niestety tylko krótkim ikarowym lotem”."
+      },
+      {
+        id: "mit-wezel-gordyjski",
+        term: "Węzeł gordyjski / Rozciąć węzeł gordyjski",
+        origin: "Mitologia / Historia antyczna",
+        source: "Legenda o królu Gordiosie i Aleksandrze Wielkim",
+        genesis: "W świątyni Zeusa w Gordion znajdował się rydwan ze skomplikowanym węzłem z dereniowego łyka. Wyrocznia głosiła, że kto go rozplącze, zostanie władcą Azji. Aleksander Wielki po prostu przeciął go mieczem.",
+        meaning: "Węzeł gordyjski: niezwykle zawiła sprawa. Rozciąć węzeł: rozwiązać trudny problem w sposób śmiały, prosty i bezkompromisowy.",
+        example: "„Zamiast przedłużać bezsensowne negocjacje, premier postanowił rozciąć węzeł gordyjski i podpisać dekret”."
+      },
+      {
+        id: "mit-meki-tantala",
+        term: "Męki Tantala",
+        origin: "Mitologia",
+        source: "Mit o Tantalu",
+        genesis: "Tantal za zuchwałość wobec bogów (podał im na uczcie ciało syna Pelopsa) został ukarany w podziemiach: stał po szyję w wodzie, która uciekała, gdy chciał pić, a nad nim wisiały gałęzie z owocami, które wiatr odsuwał, gdy wyciągał rękę.",
+        meaning: "Straszliwe cierpienie polegające na niemożności zaspokojenia pragnienia lub osiągnięcia celu, który znajduje się tuż obok, na wyciągnięcie ręki.",
+        example: "„Siedząc na diecie i patrząc na paterę ze świeżym ciastem, przeżywał prawdziwe męki Tantala”."
+      },
+      {
+        id: "mit-jablko-niezgody",
+        term: "Jabłko niezgody",
+        origin: "Mitologia",
+        source: "Mit o weselu Tetydy i Peleusa",
+        genesis: "Nieproszona na wesele bogini niezgody Eris rzuciła złote jabłko z napisem: „Dla najpiękniejszej”. Spór o nie między Herą, Ateną i Afrodytą rozsądził Parys, co doprowadziło do wybuchu wojny trojańskiej.",
+        meaning: "Przyczyna kłótni, zatargu, sporu i rozbicia jedności w grupie.",
+        example: "„Spadek po dziadku stał się prawdziwym jabłkiem niezgody dla całej rodziny”."
+      },
+      {
+        id: "mit-miecz-damoklesa",
+        term: "Miecz Damoklesa",
+        origin: "Mitologia / Anegdota antyczna",
+        source: "Opowieść o tyranie Dionizjuszu z Syrakuz",
+        genesis: "Dworzanin Damokles zazdrościł tyranowi bogactwa i władzy. Dionizjusz posadził go na tronie przy wystawnej uczcie, ale nad jego głową kazał zawiesić na cienkim końskim włosie ostry miecz.",
+        meaning: "Nieustanne, wiszące nad kimś śmiertelne niebezpieczeństwo lub groźba nieszczęścia mimo pozornego dobrobytu.",
+        example: "„Widmo likwidacji etatu wisiało nad nim jak miecz Damoklesa”."
+      },
+      {
+        id: "mit-paniczny-strach",
+        term: "Paniczny strach / lęk",
+        origin: "Mitologia",
+        source: "Mit o bożku Panie",
+        genesis: "Grecki bóg lasów i pasterzy Pan swym przeraźliwym głosem i dzikim wyglądem potrafił niespodziewanie wywołać wśród ludzi i stad zwierząt nagły, obezwładniający popłoch.",
+        meaning: "Nagły, niepohamowany, paraliżujący strach, często zbiorowy i nieuzasadniony racjonalnie.",
+        example: "„Wybuch fajerwerków wywołał paniczny lęk wśród psów w całym osiedlu”."
+      },
+      {
+        id: "mit-olimpijski-spokoj",
+        term: "Olimpijski spokój",
+        origin: "Mitologia",
+        source: "Wyobrażenie góry Olimp",
+        genesis: "Bogowie greccy mieszkający na szczycie Olimpu wiedli beztroskie, wieczne życie, spoglądając na ziemskie burze i tragedie śmiertelników z absolutnym dystansem i niewzruszonym opanowaniem.",
+        meaning: "Całkowity, niewzruszony spokój, opanowanie emocji w sytuacjach stresowych i trudnych.",
+        example: "„Mimo chaosu na sali sądowej adwokat zachował olimpijski spokój”."
+      },
+      {
+        id: "mit-drakonskie-prawa",
+        term: "Drakońskie prawa / kary",
+        origin: "Historia starożytnej Grecji",
+        source: "Prawa prawodawcy Drakona w Atenach (VII w. p.n.e.)",
+        genesis: "Ateński prawodawca Drakon spisał niezwykle surowe prawa, w których niemal za każde przewinienie (nawet kradzież kapusty) groziła kara śmierci. Mówiono, że jego prawa pisane były krwią, a nie atramentem.",
+        meaning: "Przepisy lub kary niezwykle surowe, bezwzględne, rygorystyczne i bezlitosne.",
+        example: "„Wprowadzenie drakońskich kar za przekroczenie prędkości znacznie zmniejszyło liczbę wypadków”."
+      },
+      {
+        id: "mit-scylla-charybda",
+        term: "Między Scyllą a Charybdą",
+        origin: "Mitologia",
+        source: "Homer – Odyseja",
+        genesis: "Dwa morskie potwory czyhające w Cieśninie Mesyńskiej: Scylla porywała marynarzy z pokładu swymi sześcioma paszczami, a Charybda wciągała całe statki w wir wodny. Uniknięcie jednego groziło wpadnięciem na drugiego.",
+        meaning: "Znaleźć się w sytuacji bez wyjścia, między dwoma równorzędnymi niebezpieczeństwami, gdzie każdy wybór niesie straty.",
+        example: "„Firma znalazła się między Scyllą bankructwa a Charybdą drastycznych zwolnień”."
+      },
+      {
+        id: "mit-prokrustowe-loze",
+        term: "Prokrustowe łoże",
+        origin: "Mitologia",
+        source: "Mit o Tezeuszu i zbójcy Prokrustesie",
+        genesis: "Zbójnik Prokrustes zmuszał pojmanych wędrowców, by kładli się na jego łóżku. Jeśli gość był za długi – obcinał mu nogi; jeśli za krótki – rozciągał go na siłę stawami.",
+        meaning: "Bezwzględne, sztuczne i brutalne dopasowywanie kogoś lub czegoś do z góry przyjętego, sztywnego schematu.",
+        example: "„Wtłaczanie wrażliwości uczniów w prokrustowe łoże szkolnych kluczy odpowiedzi niszczy kreatywność”."
+      },
+      {
+        id: "mit-labedzi-spiew",
+        term: "Łabędzi śpiew",
+        origin: "Mitologia / Starożytne wierzenia",
+        source: "Wierzenia greckie o łabędziach poświęconych Apollinowi",
+        genesis: "W starożytności wierzono, że niemy przez całe życie łabędź wydaje z siebie niezwykły, przepiękny i przejmujący śpiew tylko raz – tuż przed swoją śmiercią.",
+        meaning: "Ostatnie dzieło lub wielki występ artysty, polityka czy sportowca przed śmiercią lub zakończeniem kariery.",
+        example: "„Ta powieść była prawdziwym łabędzim śpiewem wybitnego pisarza”."
+      },
+      {
+        id: "mit-koszula-dejaniry",
+        term: "Koszula Dejaniry",
+        origin: "Mitologia",
+        source: "Mit o Heraklesie i Dejanirze",
+        genesis: "Dejanira, chcąc zapewnić sobie wierność Heraklesa, namoczyła jego szatę w krwi centaura Nessosa (wierząc, że to eliksir miłości). Krew okazała się żrącą trucizną, która wżarła się w ciało herosa, zadając mu nieludzkie męki.",
+        meaning: "Coś, co sprawia potworne, nie do zniesienia cierpienie psychiczne lub fizyczne; nieszczęście sprowadzone nieświadomie z miłości.",
+        example: "„Wyrzuty sumienia stały się dla niego prawdziwą koszulą Dejaniry, której nie potrafił zrzucić”."
+      },
+      {
+        id: "mit-oczy-argusa",
+        term: "Oczy Argusa / Mieć oczy Argusa",
+        origin: "Mitologia",
+        source: "Mit o stuokim olbrzymie Argusie",
+        genesis: "Hera nakazała stuokiemu potworowi Argusowi pilnować zamienionej w krowę Io. Argus nigdy nie spał całkowicie – gdy część jego oczu odpoczywała, pozostałe czuwały.",
+        meaning: "Niezwykła czujność, podejrzliwość, baczna obserwacja kogoś, przed kim nic się nie ukryje.",
+        example: "„Wychowawczyni patrzyła na klasę oczami Argusa, pilnując, by nikt nie ściągał”."
+      },
+      {
+        id: "mit-strzala-amora",
+        term: "Strzała Amora (Kupidyna)",
+        origin: "Mitologia",
+        source: "Mit o bożku miłości Erosie / Amorze",
+        genesis: "Amor strzelał z łuku złotymi strzałami z grotem miłości, sprawiając, że trafiony natychmiast pałał bezwzględną, ślepą miłością do pierwszej napotkanej osoby.",
+        meaning: "Nagłe, gwałtowne, niespodziewane zakochanie się od pierwszego wejrzenia.",
+        example: "„Wystarczyło jedno spojrzenie na stacji metra i strzała Amora dosięgła go bez ostrzeżenia”."
+      },
+      {
+        id: "mit-zlote-runo",
+        term: "Złote runo",
+        origin: "Mitologia",
+        source: "Mit o Argonautach i wyprawie Jazona",
+        genesis: "Złote runo uskrzydlonego barana Chrysomallosa strzeżone przez smoka w Kolchidzie. Jazon z załogą Argonautów wyruszył na niebezpieczną wyprawę, by je zdobyć.",
+        meaning: "Cenny, wspaniały, legendarny skarb; wielki cel zdobyty po niezwykle trudnych zmaganiach.",
+        example: "„Dyplom ukończenia tej prestiżowej uczelni był dla niego złotym runem”."
+      },
+      {
+        id: "mit-mowic-jak-pytia",
+        term: "Mówić jak pytia (pytyjska odpowiedź)",
+        origin: "Mitologia / Historia antyczna",
+        source: "Wyrocznia delficka i kapłanka Pytia",
+        genesis: "Kapłanka Pytia w Delfach po nawdychaniu się oparów z ziemi wygłaszała przepowiednie w sposób chaotyczny, dwuznaczny i zagadkowy, który można było interpretować na różne sprzeczne sposoby.",
+        meaning: "Wypowiadać się niejasno, wieloznacznie, tajemniczo, wymijająco i zagadkowo.",
+        example: "„Rzecznik rządu mówił jak pytia, unikając jednoznacznej odpowiedzi na pytania dziennikarzy”."
+      },
+      {
+        id: "mit-wierna-jak-penelopa",
+        term: "Wierna jak Penelopa",
+        origin: "Mitologia",
+        source: "Homer – Odyseja",
+        genesis: "Penelopa przez 20 lat czekała na powrót męża Odyseusza z Troi. Zwodziła natrętnych zalotników, obiecując wybór męża po utkaniu całunu, który nocami potajemnie pruła.",
+        meaning: "Wzór niezłomnej, bezgranicznej wierności, cierpliwości i stałości uczuć małżeńskich.",
+        example: "„Przez całe lata jego zesłania na Sybir czekała na niego w domu, wierna jak Penelopa”."
+      },
+      {
+        id: "mit-narcyz",
+        term: "Narcyz / Narcystyczny",
+        origin: "Mitologia",
+        source: "Mit o Narcyzie i nimfie Echo",
+        genesis: "Piękny młodzieniec Narcyz odrzucił miłość nimfy Echo. Za karę zakochał się we własnym odbiciu w tafli wody i umarł z tęsknoty, nie mogąc się od niego oderwać; na jego grobie wyrósł kwiat narcyza.",
+        meaning: "Człowiek bezkrytycznie zapatrzony w siebie, zakochany we własnej urodzie lub doskonałości, skrajny egoista.",
+        example: "„Trudno z nim współpracować, to klasyczny narcyz, który nie znosi cienia krytyki”."
+      },
+      {
+        id: "mit-styksowe-wody",
+        term: "Przepłynąć Styks / Styksowe wody",
+        origin: "Mitologia",
+        source: "Mit o rzece Styks w Hadesie",
+        genesis: "Styks był rzeką w podziemiach Hadesu oddzielającą świat żywych od krainy cieni. Dusze zmarłych przewoził przez nią ponury przewoźnik Charon za obola włożonego pod język.",
+        meaning: "Umrzeć, przejść na drugą stronę życia, odejść do wieczności.",
+        example: "„Gdy stary wiarus przepłynął Styks, cała wieś żegnała go z wojskowymi honorami”."
+      },
+      {
+        id: "mit-stanczyk-kaduceusz",
+        term: "Laska Merkurego (Kaduceusz)",
+        origin: "Mitologia",
+        source: "Atrybut boskiego posłańca Hermesa (Merkurego)",
+        genesis: "Laska opleciona dwoma wężami ze skrzydłami u góry, mająca moc godzenia zwaśnionych i usypiania. W literaturze polskiej (Wyspiański) stała się symbolem usypiania narodu.",
+        meaning: "Symbol pokoju, handlu, a w kontekście politycznym – manipulacji i usypiania czujności społecznej.",
+        example: "„Dziennikarz w »Weselu« otrzymał kaduceusz jako symbol politycznego usypiania Polaków”."
+      },
+      {
+        id: "mit-achillesowa-tarcza",
+        term: "Tarcza Achillesa",
+        origin: "Mitologia",
+        source: "Homer – Iliada",
+        genesis: "Wspaniała tarcza wykuta dla Achillesa przez boskiego kowala Hefajstosa. Homer poświęcił jej pieśń (ekfrazę), opisując wyryte na niej całe życie ludzkie: pokój, wojnę, pracę na roli i kosmos.",
+        meaning: "Wzór genialnego, plastycznego, panoramicznego i kunsztownego opisu całego świata w dziele sztuki.",
+        example: "„Opis obyczajów w »Panu Tadeuszu« to prawdziwa tarcza Achillesa polskiej kultury”."
+      },
+
+      // FRAZEOLOGIZMY BIBLIJNE (30)
+      {
+        id: "biblia-zakazany-owoc",
+        term: "Zakazany owoc",
+        origin: "Biblia",
+        source: "Księga Rodzaju (Stary Testament)",
+        genesis: "Owoc z drzewa poznania dobra i zła w ogrodzie Eden, którego Bóg zabronił zrywać pierwszym ludziom pod groźbą śmierci. Ewa zerwała go skuszona przez szatana.",
+        meaning: "Rzecz niedozwolona prawem lub obyczajem, która staje się szczególnie pociągająca właśnie dlatego, że jest zabroniona.",
+        example: "„Dla zbuntowanego nastolatka ucieczka na wagary smakowała jak zakazany owoc”."
+      },
+      {
+        id: "biblia-hiobowa-wiesc",
+        term: "Hiobowa wieść",
+        origin: "Biblia",
+        source: "Księga Hioba (Stary Testament)",
+        genesis: "Kolejni posłańcy przybiegali do bogobojnego Hioba, przynosząc straszliwe wiadomości o nagłej utracie stad, śmierci sług i zawaleniu się domu na wszystkie jego dzieci.",
+        meaning: "Przerażająca, tragiczna, katastrofalna wiadomość przynosząca wieść o wielkim nieszczęściu.",
+        example: "„Telefon w środku nocy przyniósł hiobową wieść o wypadku samochodowym brata”."
+      },
+      {
+        id: "biblia-salomonowy-wyrok",
+        term: "Salomonowy wyrok / mądrość",
+        origin: "Biblia",
+        source: "1 Księga Królewska (Stary Testament)",
+        genesis: "Król Salomon rozsądził spór dwóch kobiet kłócących się o niemowlę. Zaproponował rozcięcie dziecka mieczem na pół. Prawdziwa matka natychmiast zrezygnowała z praw, byle ocalić życie syna, dzięki czemu król rozpoznał prawdę.",
+        meaning: "Wyrok niezwykle mądry, sprawiedliwy, przenikliwy, rozstrzygający pozornie nierozwiązywalny spór.",
+        example: "„Sędzia wydał salomonowy wyrok, nakazując współwłaścicielom podzielenie zysków proporcjonalnie do wkładu pracy”."
+      },
+      {
+        id: "biblia-koziol-ofiarny",
+        term: "Kozioł ofiarny",
+        origin: "Biblia",
+        source: "Księga Kapłańska (Stary Testament)",
+        genesis: "W Dzień Przebłagania (Jom Kippur) arcykapłan kładł ręce na głowie kozła, wyznając nad nim grzechy całego ludu Izraela, po czym wypędzał zwierzę na pustynię, symbolicznie oczyszczając naród z winy.",
+        meaning: "Niewinna osoba, na którą zrzuca się całą odpowiedzialność za błędy, zaniedbania i winy innych.",
+        example: "„Po kompromitacji projektu kierownictwo zrobiło z młodego stażysty kozła ofiarnego”."
+      },
+      {
+        id: "biblia-traby-jerychonskie",
+        term: "Trąby jerychońskie",
+        origin: "Biblia",
+        source: "Księga Jozuego (Stary Testament)",
+        genesis: "Izraelici oblegający potężnie ufortyfikowane miasto Jerycho przez siedem dni obchodzili mury z Arką Przymierza. Siódmego dnia na dźwięk kapłańskich trąb i okrzyku ludu mury obronne runęły same.",
+        meaning: "Przeraźliwy, ogłuszający krzyk, potężny hałas lub głos zdolny obalić najsilniejsze przeszkody.",
+        example: "„Krzyczał na całe gardło jak trąba jerychońska, budząc wszystkich sąsiadów w bloku”."
+      },
+      {
+        id: "biblia-judaszowy-pocalunek",
+        term: "Judaszowy pocałunek",
+        origin: "Biblia",
+        source: "Ewangelia wg św. Mateusza (Nowy Testament)",
+        genesis: "Judasz Iskariota w ogrodzie Getsemani wskazał żołnierzom Jezusa poprzez pocałunek w policzek, mówiąc: „Ten, którego pocałuję, to On; Jego chwytajcie”.",
+        meaning: "Obłudny, fałszywy, zdradziecki gest przyjaźni lub lojalności, który w rzeczywistości kryje nienawiść i podłość.",
+        example: "„Publiczne pochwały od rywala okazały się tylko judaszowym pocałunkiem przed zwolnieniem z pracy”."
+      },
+      {
+        id: "biblia-judaszowe-srebrniki",
+        term: "Judaszowe srebrniki",
+        origin: "Biblia",
+        source: "Ewangelia wg św. Mateusza (Nowy Testament)",
+        genesis: "Judasz otrzymał od arcykapłanów trzydzieści srebrnych monet za wydanie swojego Nauczyciela na śmierć.",
+        meaning: "Zapłata za zdradę, haniebnie i nieetycznie zdobyte pieniądze kosztem krzywdy drugiego człowieka.",
+        example: "„Za garść judaszowych srebrników sprzedał tajemnice handlowe firmy konkurencji”."
+      },
+      {
+        id: "biblia-umywac-rece",
+        term: "Umywać ręce",
+        origin: "Biblia",
+        source: "Ewangelia wg św. Mateusza (Nowy Testament)",
+        genesis: "Rzymski namiestnik Poncjusz Piłat, wiedząc, że Jezus jest niewinny, uległ naciskom tłumu żądającego ukrzyżowania. Kazał podać misę z wodą i umył ręce przed ludem, mówiąc: „Nie jestem winien krwi tego Sprawiedliwego”.",
+        meaning: "Zrzucać z siebie odpowiedzialność za trudną decyzję lub zło, demonstracyjnie odcinać się od sprawy.",
+        example: "„Gdy pojawiły się kłopoty finansowe, prezes po prostu umył ręce i złożył dymisję”."
+      },
+      {
+        id: "biblia-niewierny-tomasz",
+        term: "Niewierny Tomasz",
+        origin: "Biblia",
+        source: "Ewangelia wg św. Jana (Nowy Testament)",
+        genesis: "Apostoł Tomasz nie uwierzył w zmartwychwstanie Chrystusa, dopóki osobiście nie zobaczył ran po gwoździach i nie włożył palca w Jego przebity bok.",
+        meaning: "Człowiek sceptyczny, niedowiarek, który nie uwierzy na słowo, dopóki sam na własne oczy nie sprawdzi faktów.",
+        example: "„Mój ojciec to niewierny Tomasz – nie uwierzy w prognozę pogody, dopóki sam nie wyjrzy przez okno”."
+      },
+      {
+        id: "biblia-syn-marnotrawny",
+        term: "Syn marnotrawny",
+        origin: "Biblia",
+        source: "Ewangelia wg św. Łukasza (Przypowieść Jezusa)",
+        genesis: "Młodszy syn zażądał swojej części majątku, wyjechał w świat i wszystko roztrwonił na uciechy. Skruszony wrócił do ojca jako żebrak, prosząc o wybaczenie, a kochający ojciec przyjął go z otwartymi ramionami.",
+        meaning: "Człowiek, który pobłądził, postępował źle lub lekkomyślnie, ale zrozumiał swój błąd, powrócił i uzyskał przebaczenie.",
+        example: "„Po latach tułaczki i zerwanych kontaktów syn marnotrawny powrócił wreszcie do rodzinnego domu”."
+      },
+      {
+        id: "biblia-milosierny-samarytanin",
+        term: "Miłosierny Samarytanin",
+        origin: "Biblia",
+        source: "Ewangelia wg św. Łukasza (Przypowieść Jezusa)",
+        genesis: "Pobity i obrabowany człowiek leżał przy drodze. Kapłan i lewita ominęli go obojętnie. Pomógł mu dopiero pogardzany przez Żydów Samarytanin – opatrzył jego rany i zapłacił za pobyt w gospodzie.",
+        meaning: "Człowiek szlachetny, pełen empatii, niosący bezinteresowną pomoc potrzebującemu, bez względu na różnice narodowe czy religijne.",
+        example: "„Anonimowy przechodzień okazał się miłosiernym Samarytaninem i uratował wychłodzonego staruszka”."
+      },
+      {
+        id: "biblia-wdowi-grosz",
+        term: "Wdowi grosz",
+        origin: "Biblia",
+        source: "Ewangelia wg św. Marka i Łukasza (Nowy Testament)",
+        genesis: "Jezus obserwował ludzi wrzucających ofiary do skarbony świątynnej. Bogacze dawali z nadmiaru, a uboga wdowa wrzuciła dwa małe pieniążki (leptę). Jezus rzekł, że dała najwięcej, bo oddała wszystko, co miała na utrzymanie.",
+        meaning: "Niewielki pod względem materialnym datek lub pomoc, ale ofiarowana z wielkim poświęceniem i całym sercem.",
+        example: "„Dla tej małej fundacji wpłata kilkunastu złotych od emerytki była prawdziwym wdowim groszem”."
+      },
+      {
+        id: "biblia-kainowe-znamie",
+        term: "Kainowe znamię (piętno Kainowe)",
+        origin: "Biblia",
+        source: "Księga Rodzaju (Stary Testament)",
+        genesis: "Kain z zazdrości zabił swojego brata Abla. Bóg przeklął Kaina i naznaczył go specjalnym znakiem, by nikt go nie zabił, skazując go na wieczną tułaczkę z piętnem zbrodniarza.",
+        meaning: "Znak zbrodniarza, piętno mordercy lub bratobójcy, którego wina nigdy nie zostanie zapomniana.",
+        example: "„Do końca życia nosił na sobie kainowe znamię człowieka, który zdradził własnych przyjaciół”."
+      },
+      {
+        id: "biblia-sodoma-gomora",
+        term: "Sodoma i Gomora",
+        origin: "Biblia",
+        source: "Księga Rodzaju (Stary Testament)",
+        genesis: "Dwa starożytne miasta w dolinie Siddim, których mieszkańcy dopuszczali się skrajnej rozpusty, grzechu i bezprawia. Bóg zniszczył je deszczem siarki i ognia.",
+        meaning: "Miejsce skrajnego upadku moralnego, rozpusty, bezprawia, a w potocznym sensie – wielki bałagan, chaos i awantura.",
+        example: "„Po wczorajszej imprezie w mieszkaniu panowała prawdziwa Sodoma i Gomora”."
+      },
+      {
+        id: "biblia-krzew-gorejacy",
+        term: "Krzew gorejący",
+        origin: "Biblia",
+        source: "Księga Wyjścia (Stary Testament)",
+        genesis: "Bóg objawił się Mojżeszowi pod górą Horeb w postaci płonącego krzaka ciernistego, który płonął żywym ogniem, lecz w ogóle nie ulegał spaleniu.",
+        meaning: "Symbol boskiej obecności, cudu, wielkiego natchnienia duchowego lub prawdy, która nigdy nie gaśnie.",
+        example: "„Dla poety spotkanie z ojczystą przyrodą stało się krzewem gorejącym nowego natchnienia”."
+      },
+      {
+        id: "biblia-manna-z-nieba",
+        term: "Manna z nieba",
+        origin: "Biblia",
+        source: "Księga Wyjścia (Stary Testament)",
+        genesis: "Gdy głodujący Izraelici wędrowali przez pustynię do Ziemi Obiecanej, Bóg zesłał im z nieba cudowny pokarm w postaci białych ziaren przypominających szron o smaku placka z miodem.",
+        meaning: "Cudowny, niespodziewany ratunek w kłopotach; zysk lub dar od losu, który przyszedł łatwo, bez żadnego wysiłku.",
+        example: "„Nie możesz tylko siedzieć z założonymi rękami i czekać, aż spadnie ci manna z nieba”."
+      },
+      {
+        id: "biblia-ciemnosci-egipskie",
+        term: "Ciemności egipskie",
+        origin: "Biblia",
+        source: "Księga Wyjścia (Stary Testament)",
+        genesis: "Jedna z dziesięciu plag zesłanych przez Boga na Egipt za odmowę wypuszczenia Izraelitów: nieprzenikniona ciemność zaległa nad całym krajem przez trzy dni.",
+        meaning: "Nieprzenikniona, absolutna, głęboka i gęsta ciemność, w której nic nie widać.",
+        example: "„Gdy w całej dzielnicy wyłączono prąd, na ulicach zapanowały egipskie ciemności”."
+      },
+      {
+        id: "biblia-plagi-egipskie",
+        term: "Plagi egipskie",
+        origin: "Biblia",
+        source: "Księga Wyjścia (Stary Testament)",
+        genesis: "Dziesięć klęsk zesłanych przez Boga na faraona i naród egipski (m.in. przemiana wody w krew, żaby, szarańcza, zaraza bydła, ciemność, śmierć pierworodnych).",
+        meaning: "Seria niezwykle uciążliwych, dotkliwych nieszczęść i klęsk spadających na kogoś jedna po drugiej.",
+        example: "„Awaria pieca, zalanie łazienki i grypa domowników – spadły na nas w tym tygodniu wszystkie plagi egipskie”."
+      },
+      {
+        id: "biblia-glos-na-pustyni",
+        term: "Głos wołającego na pustyni",
+        origin: "Biblia",
+        source: "Księga Izajasza / Ewangelia wg św. Mateusza",
+        genesis: "Proroctwo o św. Janie Chrzcicielu, który samotnie nauczał na Pustyni Judzkiej, wzywając naród do opamiętania, nawrócenia i prostowania ścieżek dla Pana.",
+        meaning: "Słowa prawdy, apele, ostrzeżenia lub mądre rady, które są całkowicie ignorowane przez otoczenie; nawoływanie bez echa.",
+        example: "„Jego ostrzeżenia przed kryzysem finansowym były niestety tylko głosem wołającego na pustyni”."
+      },
+      {
+        id: "biblia-kolos-na-glinianych-nogach",
+        term: "Kolos na glinianych nogach",
+        origin: "Biblia",
+        source: "Księga Daniela (Stary Testament)",
+        genesis: "Prorok Daniel zinterpretował sen króla Nabuchodonozora: olbrzymi posąg ze złota, srebra i miedzi miał stopy częściowo z żelaza, a częściowo z gliny. Mały kamień uderzył w gliniane stopy i cały potężny posąg runął.",
+        meaning: "Potęga pozorna; instytucja, mocarstwo lub człowiek sprawiający wrażenie niezwyciężonego, który w rzeczywistości ma słabe podstawy i może łatwo upaść.",
+        example: "„Gospodarka tego imperium okazała się kolosem na glinianych nogach, który załamał się po kilku miesiącach kryzysu”."
+      },
+      {
+        id: "biblia-perly-przed-wieprze",
+        term: "Rzucać perły przed wieprze",
+        origin: "Biblia",
+        source: "Ewangelia wg św. Mateusza (Kazanie na Górze)",
+        genesis: "Jezus w Kazaniu na Górze pouczał swoich uczniów: „Nie dawajcie psom tego, co święte, i nie rzucajcie swych pereł przed wieprze, by ich nie podeptały nogami”.",
+        meaning: "Dawać cenne rzeczy, mądrość, sztukę lub uczucia komuś, kto zupełnie nie potrafi ich docenić i nimi gardzi.",
+        example: "„Tłumaczenie poezji ludziom zapatrzonym tylko w zysk to zwykłe rzucanie pereł przed wieprze”."
+      },
+      {
+        id: "biblia-wilk-w-owczej-skorze",
+        term: "Wilk w owczej skórze",
+        origin: "Biblia",
+        source: "Ewangelia wg św. Mateusza (Kazanie na Górze)",
+        genesis: "Jezus ostrzegał przed fałszywymi prorokami: „Strzeżcie się fałszywych proroków, którzy przychodzą do was w owczej skórze, a wewnątrz są drapieżnymi wilkami”.",
+        meaning: "Człowiek podstępny, niebezpieczny, nieszczery, który udaje niewinnego, łagodnego i życzliwego przyjaciela.",
+        example: "„Uważaj na jego uśmiechy – to klasyczny wilk w owczej skórze, który donosi szefowi”."
+      },
+      {
+        id: "biblia-kielich-goryczy",
+        term: "Wypić kielich goryczy",
+        origin: "Biblia",
+        source: "Modlitwa w Ogrójcu (Ewangelie)",
+        genesis: "Jezus modlący się w Getsemani przed męką wypowiada słowa: „Ojcze mój, jeśli to możliwe, niech Mnie ominie ten kielich! Wszakże nie jak Ja chcę, ale jak Ty”.",
+        meaning: "Doświadczyć wielkiego cierpienia, upokorzenia, bólu lub przeżyć do końca tragiczny los.",
+        example: "„Po zdradzie wspólnika musiał wypić kielich goryczy i ogłosić upadłość firmy”."
+      },
+      {
+        id: "biblia-nosic-krzyz",
+        term: "Nosić swój krzyż",
+        origin: "Biblia",
+        source: "Ewangelie (Nowy Testament)",
+        genesis: "Chrystus niosący krzyż na Golgotę oraz słowa: „Kto nie bierze swego krzyża, a idzie za Mną, nie jest Mnie godzien”.",
+        meaning: "Cierpliwie, dzielnie i z pokorą znosić życiowe nieszczęścia, choroby i przeciwności losu.",
+        example: "„Mimo ciężkiej choroby opiekowała się rodziną, godnie niosąc swój krzyż”."
+      },
+      {
+        id: "biblia-ziemia-obiecana",
+        term: "Ziemia obiecana",
+        origin: "Biblia",
+        source: "Księga Rodzaju i Wyjścia (Stary Testament)",
+        genesis: "Kraj Kanaan obiecany przez Boga Abrahamowi i jego potomkom – ziemia żyzna, urodzajna, „opływająca w mleko i miód”.",
+        meaning: "Kraina szczęśliwości, obfitości, marzeń i nadziei; miejsce dające szansę na dostatnie i wolne życie.",
+        example: "„W XIX wieku Ameryka stała się ziemią obiecaną dla milionów europejskich emigrantów”."
+      },
+      {
+        id: "biblia-drzazga-w-oku",
+        term: "Widzieć drzazgę w cudzym oku (a nie widzieć belki we własnym)",
+        origin: "Biblia",
+        source: "Ewangelia wg św. Mateusza (Kazanie na Górze)",
+        genesis: "Jezus pouczał o obłudzie sądzenia innych: „Czemu to widzisz drzazgę w oku swego brata, a belki we własnym oku nie dostrzegasz?”.",
+        meaning: "Dostrzeganie i wytykanie drobnych wad u innych ludzi przy jednoczesnym ignorowaniu własnych ogromnych błędów i win.",
+        example: "„Łatwo ci krytykować cudze błędy, ale pamiętaj o drzazdze w cudzym oku i belce we własnym”."
+      },
+      {
+        id: "biblia-slup-soli",
+        term: "Zamienić się w słup soli",
+        origin: "Biblia",
+        source: "Księga Rodzaju (Stary Testament)",
+        genesis: "Podczas ucieczki z płonącej Sodomy żona Lota wbrew zakazowi aniołów obejrzała się za siebie na miasto i natychmiast zamieniła się w słup soli.",
+        meaning: "Znieruchomieć, zdrętwieć ze zdumienia, szoku, zaskoczenia lub przerażenia.",
+        example: "„Gdy usłyszał wyrok sądu, zamienił się w słup soli i nie mógł wydusić z siebie słowa”."
+      },
+      {
+        id: "biblia-wieza-babel",
+        term: "Wieża Babel / Pomieszanie języków",
+        origin: "Biblia",
+        source: "Księga Rodzaju (Stary Testament)",
+        genesis: "Ludzie z pychy zaczęli budować wieżę sięgającą nieba. Bóg pomieszał ich języki, sprawiając, że przestali się rozumieć i musieli przerwać budowę.",
+        meaning: "Brak możliwości porozumienia, chaos, zgiełk, zamęt językowy i nieład.",
+        example: "„Na międzynarodowej konferencji bez tłumaczy zapanowała prawdziwa wieża Babel”."
+      },
+      {
+        id: "biblia-pismo-na-scianie",
+        term: "Pismo na ścianie (Mene, Mene, Tekel, Upharsin)",
+        origin: "Biblia",
+        source: "Księga Daniela (Stary Testament)",
+        genesis: "Podczas zuchwałej uczty króla Baltazara tajemnicza ręka wypisała na ścianie pałacu ogniste słowa: „Mene, Tekel, Fares”. Prorok Daniel odczytał je jako wyrok Boga: zważono cię na wadze i uznano za zbyt lekkiego – twoje królestwo zostanie zniszczone.",
+        meaning: "Nieodwracalny wyrok losu, zwiastun nieuchronnego upadku, czytelne ostrzeżenie przed katastrofą.",
+        example: "„Wyniki ostatnich sondaży były dla rządu wyraźnym pismem na ścianie”."
+      },
+      {
+        id: "biblia-arka-noego",
+        term: "Arka Noego",
+        origin: "Biblia",
+        source: "Księga Rodzaju (Stary Testament)",
+        genesis: "Wielki statek zbudowany przez sprawiedliwego Noego na rozkaz Boga, który ocalił Noego, jego rodzinę i po parze każdego gatunku zwierząt przed wodami potopu.",
+        meaning: "Symbol ocalenia, bezpiecznego schronienia, ratunku w obliczu powszechnej katastrofy i zagłady.",
+        example: "„Ta górska chata stała się dla nas arką Noego podczas szalejącej śnieżycy”."
+      }
+    ];
+
+    let state = {
+      filter: 'all',
+      originFilter: 'all',
+      mode: 'term-first',
+      currentIndex: 0,
+      isFlipped: false,
+      userScores: JSON.parse(localStorage.getItem('fiszki_frazeologizmy_scores') || '{}'),
+      items: [...phrasesData]
+    };
+
+    const cardEl = document.getElementById('flashcard');
+    const frontContent = document.getElementById('frontContent');
+    const backContent = document.getElementById('backContent');
+    const frontOrigin = document.getElementById('frontOrigin');
+    const backOrigin = document.getElementById('backOrigin');
+    const frontStatus = document.getElementById('frontStatus');
+    const backStatus = document.getElementById('backStatus');
+    const frontIndexHint = document.getElementById('frontIndexHint');
+    const backIndexHint = document.getElementById('backIndexHint');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const countAll = document.getElementById('countAll');
+    const countReview = document.getElementById('countReview');
+    const countKnown = document.getElementById('countKnown');
+    const markKnownBtn = document.getElementById('markKnownBtn');
+    const markReviewBtn = document.getElementById('markReviewBtn');
+    const modeSelect = document.getElementById('modeSelect');
+    const originFilterSelect = document.getElementById('originFilterSelect');
+
+    function saveScores() {
+      localStorage.setItem('fiszki_frazeologizmy_scores', JSON.stringify(state.userScores));
+      updateCounts();
+    }
+
+    function updateCounts() {
+      let known = 0;
+      let review = 0;
+      phrasesData.forEach(item => {
+        if (state.userScores[item.id] === 'known') known++;
+        else if (state.userScores[item.id] === 'review') review++;
+      });
+      countAll.textContent = phrasesData.length;
+      countReview.textContent = review;
+      countKnown.textContent = known;
+    }
+
+    function getFilteredList() {
+      return state.items.filter(item => {
+        if (state.filter === 'known' && state.userScores[item.id] !== 'known') return false;
+        if (state.filter === 'review' && state.userScores[item.id] !== 'review') return false;
+        if (state.originFilter !== 'all' && item.origin !== state.originFilter) return false;
+        return true;
+      });
+    }
+
+    function getCurrentItem() {
+      const list = getFilteredList();
+      if (list.length === 0) return null;
+      if (state.currentIndex >= list.length) state.currentIndex = 0;
+      if (state.currentIndex < 0) state.currentIndex = list.length - 1;
+      return list[state.currentIndex];
+    }
+
+    function renderCard() {
+      const list = getFilteredList();
+      if (list.length === 0) {
+        frontOrigin.textContent = "Koniec";
+        backOrigin.textContent = "Koniec";
+        frontStatus.textContent = "-";
+        backStatus.textContent = "-";
+        frontStatus.className = "status-badge";
+        backStatus.className = "status-badge";
+
+        frontContent.innerHTML = `
+          <div class="phrase-title" style="font-size: 1.5rem; color: var(--text-muted)">Brak frazeologizmów w wybranej grupie</div>
+          <p style="margin-top: 10px; color: var(--text-muted)">Zmień filtr statusu lub wybierz inne źródło u góry.</p>
+        `;
+        backContent.innerHTML = frontContent.innerHTML;
+        progressBar.style.width = '100%';
+        progressText.textContent = `0 / 0`;
+        return;
+      }
+
+      const item = getCurrentItem();
+      const currentStatus = state.userScores[item.id];
+
+      let statusText = "Do nauki";
+      let statusClass = "status-badge";
+      if (currentStatus === 'known') {
+        statusText = "✓ Opanowane";
+        statusClass = "status-badge known";
+      } else if (currentStatus === 'review') {
+        statusText = "⚠ Do powtórki";
+        statusClass = "status-badge review";
+      }
+
+      frontOrigin.textContent = item.origin === 'Mitologia' ? '🏛️ Mitologia' : '📖 Biblia';
+      backOrigin.textContent = item.origin === 'Mitologia' ? '🏛️ Mitologia' : '📖 Biblia';
+      frontStatus.textContent = statusText;
+      frontStatus.className = statusClass;
+      backStatus.textContent = statusText;
+      backStatus.className = statusClass;
+
+      const idxStr = `Karta ${state.currentIndex + 1}/${list.length}`;
+      frontIndexHint.textContent = idxStr;
+      backIndexHint.textContent = idxStr;
+      progressText.textContent = `${state.currentIndex + 1} / ${list.length}`;
+      progressBar.style.width = `${((state.currentIndex + 1) / list.length) * 100}%`;
+
+      markKnownBtn.classList.toggle('active', currentStatus === 'known');
+      markReviewBtn.classList.toggle('active', currentStatus === 'review');
+
+      const fullBackHTML = `
+        <div class="info-box">
+          <div style="font-size: 1.25rem; font-weight: 800; color: #818cf8; margin-bottom: 2px;">${item.term}</div>
+          <div class="origin-tag">${item.origin === 'Mitologia' ? '🏛️ Źródło mitologiczne' : '📖 Źródło biblijne'}: ${item.source}</div>
+
+          <div class="info-card">
+            <strong>💡 Dokładne znaczenie we współczesnym języku:</strong>
+            <span class="highlight">${item.meaning}</span>
+          </div>
+
+          <div class="info-card accent">
+            <strong>📜 Geneza / Skąd się wziął ten zwrot:</strong>
+            <span class="highlight">${item.genesis}</span>
+          </div>
+
+          <div class="info-card success">
+            <strong>✍️ Przykład użycia w zdaniu:</strong>
+            <span class="highlight">${item.example}</span>
+          </div>
+        </div>
+      `;
+
+      if (state.mode === 'term-first') {
+        frontContent.innerHTML = `
+          <div class="origin-tag">${item.origin === 'Mitologia' ? '🏛️ Mitologia' : '📖 Biblia'}</div>
+          <div class="phrase-title">${item.term}</div>
+          <div style="color: var(--text-muted); font-size: 0.95rem; max-width: 520px;">
+            Co dokładnie oznacza ten związek frazeologiczny i z jakiej opowieści się wywodzi?
+          </div>
+        `;
+        backContent.innerHTML = fullBackHTML;
+      } else {
+        frontContent.innerHTML = `
+          <div style="font-size: 0.82rem; font-weight: 700; color: #818cf8; text-transform: uppercase; margin-bottom: 10px;">Jaki to związek frazeologiczny?</div>
+          <div class="info-box" style="max-width: 620px;">
+            <div class="info-card">
+              <strong>Znaczenie:</strong>
+              ${item.meaning}
+            </div>
+            <div class="info-card accent">
+              <strong>Geneza / Pochodzenie:</strong>
+              ${item.genesis}
+            </div>
+          </div>
+        `;
+        backContent.innerHTML = `
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Prawidłowy frazeologizm:</div>
+          <div class="phrase-title" style="color: #a855f7; margin-bottom: 8px;">${item.term}</div>
+          ${fullBackHTML}
+        `;
+      }
+    }
+
+    function flipCard() {
+      state.isFlipped = !state.isFlipped;
+      cardEl.classList.toggle('is-flipped', state.isFlipped);
+    }
+
+    function setFlipped(val) {
+      state.isFlipped = val;
+      cardEl.classList.toggle('is-flipped', state.isFlipped);
+    }
+
+    function nextCard() {
+      const list = getFilteredList();
+      if (list.length <= 1) return;
+      setFlipped(false);
+      setTimeout(() => {
+        state.currentIndex = (state.currentIndex + 1) % list.length;
+        renderCard();
+      }, 150);
+    }
+
+    function prevCard() {
+      const list = getFilteredList();
+      if (list.length <= 1) return;
+      setFlipped(false);
+      setTimeout(() => {
+        state.currentIndex = (state.currentIndex - 1 + list.length) % list.length;
+        renderCard();
+      }, 150);
+    }
+
+    function markStatus(type) {
+      const item = getCurrentItem();
+      if (!item) return;
+
+      if (state.userScores[item.id] === type) {
+        delete state.userScores[item.id];
+      } else {
+        state.userScores[item.id] = type;
+        if (type === 'known') triggerConfetti();
+      }
+      saveScores();
+      renderCard();
+    }
+
+    function shuffleCards() {
+      setFlipped(false);
+      setTimeout(() => {
+        for (let i = state.items.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [state.items[i], state.items[j]] = [state.items[j], state.items[i]];
+        }
+        state.currentIndex = 0;
+        renderCard();
+      }, 150);
+    }
+
+    // Events
+    cardEl.addEventListener('click', (e) => {
+      if (e.target.closest('button')) return;
+      flipCard();
+    });
+
+    document.getElementById('flipBtn').addEventListener('click', flipCard);
+    document.getElementById('nextBtn').addEventListener('click', nextCard);
+    document.getElementById('prevBtn').addEventListener('click', prevCard);
+    document.getElementById('shuffleBtn').addEventListener('click', shuffleCards);
+    document.getElementById('markKnownBtn').addEventListener('click', () => markStatus('known'));
+    document.getElementById('markReviewBtn').addEventListener('click', () => markStatus('review'));
+
+    modeSelect.addEventListener('change', (e) => {
+      state.mode = e.target.value;
+      setFlipped(false);
+      renderCard();
+    });
+
+    originFilterSelect.addEventListener('change', (e) => {
+      state.originFilter = e.target.value;
+      state.currentIndex = 0;
+      setFlipped(false);
+      renderCard();
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.filter = btn.dataset.filter;
+        state.currentIndex = 0;
+        setFlipped(false);
+        renderCard();
+      });
+    });
+
+    document.getElementById('themeBtn').addEventListener('click', () => {
+      const current = document.body.getAttribute('data-theme');
+      document.body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    });
+
+    // Modal List
+    const listBtn = document.getElementById('listBtn');
+    const listModal = document.getElementById('listModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalSearch = document.getElementById('modalSearch');
+    const modalList = document.getElementById('modalList');
+
+    function openModal() {
+      renderModalList();
+      listModal.classList.add('active');
+      modalSearch.value = '';
+      modalSearch.focus();
+    }
+
+    function closeModal() {
+      listModal.classList.remove('active');
+    }
+
+    function renderModalList(query = '') {
+      modalList.innerHTML = '';
+      const q = query.toLowerCase().trim();
+      const filtered = phrasesData.filter(item => {
+        return item.term.toLowerCase().includes(q) ||
+               item.origin.toLowerCase().includes(q) ||
+               item.source.toLowerCase().includes(q) ||
+               item.meaning.toLowerCase().includes(q) ||
+               item.genesis.toLowerCase().includes(q) ||
+               item.example.toLowerCase().includes(q);
+      });
+
+      if (filtered.length === 0) {
+        modalList.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted)">Nie znaleziono pasujących frazeologizmów.</div>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const itemStatus = state.userScores[item.id];
+        let statusBadge = '';
+        if (itemStatus === 'known') statusBadge = '<span style="color:#10b981; font-size:0.75rem;">✓ Opanowane</span>';
+        else if (itemStatus === 'review') statusBadge = '<span style="color:#f59e0b; font-size:0.75rem;">⚠ Do powtórki</span>';
+
+        const row = document.createElement('div');
+        row.className = 'list-item';
+        row.innerHTML = `
+          <div class="list-item-title">
+            <span>${item.term}</span>
+            <span>${statusBadge}</span>
+          </div>
+          <div class="list-item-origin">${item.origin === 'Mitologia' ? '🏛️ Mitologia' : '📖 Biblia'} &bull; ${item.source}</div>
+          <div class="list-item-meaning"><strong>Znaczenie:</strong> ${item.meaning}</div>
+          <div class="list-item-context"><em>np. ${item.example}</em></div>
+        `;
+        row.addEventListener('click', () => {
+          if (state.filter !== 'all') {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-filter="all"]').classList.add('active');
+            state.filter = 'all';
+          }
+          if (state.originFilter !== 'all') {
+            originFilterSelect.value = 'all';
+            state.originFilter = 'all';
+          }
+          const list = getFilteredList();
+          const targetIndex = list.findIndex(x => x.id === item.id);
+          if (targetIndex !== -1) {
+            state.currentIndex = targetIndex;
+            setFlipped(false);
+            renderCard();
+          }
+          closeModal();
+        });
+        modalList.appendChild(row);
+      });
+    }
+
+    listBtn.addEventListener('click', openModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    listModal.addEventListener('click', (e) => {
+      if (e.target === listModal) closeModal();
+    });
+
+    modalSearch.addEventListener('input', (e) => {
+      renderModalList(e.target.value);
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (listModal.classList.contains('active')) {
+        if (e.key === 'Escape') closeModal();
+        return;
+      }
+
+      if (e.code === 'Space') {
+        e.preventDefault();
+        flipCard();
+      } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        nextCard();
+      } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        prevCard();
+      } else if (e.key === '1') {
+        markStatus('review');
+      } else if (e.key === '2') {
+        markStatus('known');
+      } else if (e.key === 's' || e.key === 'S') {
+        shuffleCards();
+      } else if (e.key === 'l' || e.key === 'L') {
+        openModal();
+      }
+    });
+
+    function triggerConfetti() {
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#6366f1', '#a855f7', '#10b981', '#f59e0b', '#ec4899'];
+
+      for (let i = 0; i < 40; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2 + 50,
+          vx: (Math.random() - 0.5) * 12,
+          vy: (Math.random() - 0.7) * 14,
+          size: Math.random() * 6 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 10,
+          opacity: 1
+        });
+      }
+
+      let frame = 0;
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.35;
+          p.rotation += p.vRot;
+          p.opacity -= 0.018;
+
+          if (p.opacity > 0) {
+            alive = true;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rotation * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = Math.max(0, p.opacity);
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+            ctx.restore();
+          }
+        });
+
+        frame++;
+        if (alive && frame < 90) {
+          requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      animate();
+    }
+
+    updateCounts();
+    renderCard();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiszki – Pojęcia, Filozofie i Motywy ze Wszystkich Epok</title>
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #090e1a 0%, #151633 50%, #090e1a 100%);
+      --card-bg: #172033;
+      --card-border: rgba(255, 255, 255, 0.12);
+      --card-front-glow: rgba(99, 102, 241, 0.25);
+      --card-back-glow: rgba(168, 85, 247, 0.25);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --badge-bg: rgba(99, 102, 241, 0.2);
+      --badge-text: #a5b4fc;
+      --epoch-antyk: #38bdf8;
+      --epoch-sred: #a855f7;
+      --epoch-ren: #10b981;
+      --epoch-barok: #f59e0b;
+      --epoch-oswiec: #eab308;
+      --epoch-rom: #ec4899;
+      --epoch-pozyt: #06b6d4;
+      --epoch-mloda: #8b5cf6;
+      --epoch-miedzy: #f97316;
+      --epoch-wspol: #14b8a6;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e0e7ff 50%, #f8fafc 100%);
+      --card-bg: #ffffff;
+      --card-border: rgba(0, 0, 0, 0.08);
+      --card-front-glow: rgba(99, 102, 241, 0.15);
+      --card-back-glow: rgba(168, 85, 247, 0.15);
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --badge-bg: rgba(99, 102, 241, 0.12);
+      --badge-text: #3730a3;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 40px;
+      overflow-x: hidden;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      width: 100%;
+      max-width: 820px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .title-group h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      background: linear-gradient(to right, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .title-group p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    button.icon-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+
+    button.icon-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+
+    .controls-wrapper {
+      width: 100%;
+      max-width: 820px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tabs-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      background: rgba(15, 23, 42, 0.4);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      gap: 4px;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+    }
+
+    .select-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .custom-select {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 7px 12px;
+      border-radius: 10px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .progress-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .progress-bar-bg {
+      flex: 1;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #6366f1, #a855f7);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    /* Flashcard Stage */
+    .stage {
+      width: 100%;
+      max-width: 740px;
+      min-height: 440px;
+      perspective: 1400px;
+      margin-bottom: 24px;
+      user-select: none;
+    }
+
+    .card {
+      width: 100%;
+      min-height: 440px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      border-radius: 24px;
+    }
+
+    .card.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      min-height: 440px;
+      height: 100%;
+      backface-visibility: hidden !important;
+      -webkit-backface-visibility: hidden !important;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 30px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+      box-sizing: border-box;
+      overflow-y: auto;
+      transform-style: preserve-3d;
+      transition: opacity 0.3s ease;
+    }
+
+    .card-face.front {
+      transform: rotateY(0deg) translateZ(1px);
+      box-shadow: 0 0 35px var(--card-front-glow);
+    }
+
+    .card-face.back {
+      transform: rotateY(180deg) translateZ(1px);
+      box-shadow: 0 0 35px var(--card-back-glow);
+    }
+
+    /* Wykluczenie odbicia lustrzanego */
+    .card:not(.is-flipped) .card-face.back {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .card.is-flipped .card-face.front {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .card:not(.is-flipped) .card-face.front {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .card.is-flipped .card-face.back {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .badge-epoch {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+    }
+
+    .status-badge.known {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+    }
+
+    .status-badge.review {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      padding: 12px 0;
+    }
+
+    .concept-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+      color: #818cf8;
+    }
+
+    .epoch-origin-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #c084fc;
+      margin-bottom: 16px;
+    }
+
+    .definition-box {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--text-main);
+      max-width: 620px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .example-box {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 4px solid var(--primary);
+      border-radius: 10px;
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .example-box strong {
+      color: var(--text-main);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .example-box span.highlight {
+      color: #f1f5f9;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--card-border);
+      padding-top: 12px;
+      margin-top: 10px;
+    }
+
+    .flip-hint {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      opacity: 0.8;
+    }
+
+    .actions-bar {
+      width: 100%;
+      max-width: 740px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn-group, .status-btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-success {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+
+    .btn-success:hover, .btn-success.active {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .btn-warning {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+    }
+
+    .btn-warning:hover, .btn-warning.active {
+      background: var(--warning);
+      color: #fff;
+    }
+
+    .keyboard-shortcuts {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .kbd {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-window {
+      background: #1e293b;
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 820px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+
+    [data-theme="light"] .modal-window {
+      background: #ffffff;
+    }
+
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .modal-body {
+      padding: 16px 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .search-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      outline: none;
+    }
+
+    [data-theme="light"] .search-input {
+      background: #f1f5f9;
+    }
+
+    .items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .list-item {
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.03);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .list-item:hover {
+      background: rgba(99, 102, 241, 0.1);
+      border-color: var(--primary);
+    }
+
+    .list-item-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      color: #818cf8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .list-item-epoch {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #c084fc;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .list-item-def {
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .list-item-example {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    canvas#confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    @media (max-width: 640px) {
+      .stage, .card, .card-face {
+        min-height: 480px;
+      }
+      .concept-title {
+        font-size: 1.6rem;
+      }
+      .actions-bar {
+        justify-content: center;
+      }
+      .nav-btn-group, .status-btn-group {
+        width: 100%;
+        justify-content: center;
+      }
+      .keyboard-shortcuts {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <canvas id="confetti"></canvas>
+
+  <header>
+    <div class="title-group">
+      <h1>Pojęcia i Motywy Epok</h1>
+      <p>Baza haseł, filozofii i motywów maturalnych z podziałem na epoki</p>
+    </div>
+    <div class="header-actions">
+      <a href="../index.html" class="icon-btn" title="Powrót do menu głównego" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem;">🏠</a>
+      
+      <button class="icon-btn" id="listBtn" title="Spis wszystkich pojęć (L)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="icon-btn" id="shuffleBtn" title="Pomieszaj pojęcia (S)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
+      </button>
+      <button class="icon-btn" id="themeBtn" title="Przełącz tryb jasny/ciemny">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="controls-wrapper">
+    <div class="tabs-row">
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">Wszystkie (<span id="countAll">0</span>)</button>
+        <button class="filter-btn" data-filter="review">Do powtórki (<span id="countReview">0</span>)</button>
+        <button class="filter-btn" data-filter="known">Opanowane (<span id="countKnown">0</span>)</button>
+      </div>
+
+      <div class="select-group">
+        <select class="custom-select" id="epochFilterSelect">
+          <option value="all">Wszystkie epoki</option>
+          <option value="Antyk">Antyk</option>
+          <option value="Średniowiecze">Średniowiecze</option>
+          <option value="Renesans">Renesans</option>
+          <option value="Barok">Barok</option>
+          <option value="Oświecenie">Oświecenie</option>
+          <option value="Romantyzm">Romantyzm</option>
+          <option value="Pozytywizm">Pozytywizm</option>
+          <option value="Młoda Polska">Młoda Polska</option>
+          <option value="Dwudziestolecie">Dwudziestolecie międzywojenne</option>
+          <option value="Współczesność">Wojna i Współczesność</option>
+        </select>
+
+        <select class="custom-select" id="modeSelect">
+          <option value="term-first">Przód: Pojęcie ➔ Tył: Epoka i znaczenie</option>
+          <option value="def-first">Przód: Znaczenie ➔ Tył: Jakie to pojęcie i epoka?</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+      <div class="progress-text" id="progressText">1 / 72</div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="card" id="flashcard">
+      <!-- FRONT -->
+      <div class="card-face front">
+        <div class="card-top">
+          <span class="badge-epoch" id="frontBadge">EPOKA</span>
+          <span class="status-badge" id="frontStatus">Do nauki</span>
+        </div>
+        <div class="card-content" id="frontContent">
+          <!-- Dynamic -->
+        </div>
+        <div class="card-footer">
+          <div class="flip-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+            Kliknij lub naciśnij Spację, aby obrócić
+          </div>
+          <span id="frontIndexHint">Karta 1/72</span>
+        </div>
+      </div>
+
+      <!-- BACK -->
+      <div class="card-face back">
+        <div class="card-top">
+          <span class="badge-epoch" id="backBadge">EPOKA</span>
+          <span class="status-badge" id="backStatus">Do nauki</span>
+        </div>
+        <div class="card-content" id="backContent">
+          <!-- Dynamic -->
+        </div>
+        <div class="card-footer">
+          <div class="flip-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+            Kliknij lub Spacja, aby odwrócić
+          </div>
+          <span id="backIndexHint">Karta 1/72</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions-bar">
+    <div class="nav-btn-group">
+      <button class="btn" id="prevBtn" title="Poprzednia (Strzałka w lewo)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Wstecz
+      </button>
+      <button class="btn btn-primary" id="flipBtn" title="Obróć kartę (Spacja)">
+        Obróć
+      </button>
+      <button class="btn" id="nextBtn" title="Następna (Strzałka w prawo)">
+        Dalej
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+
+    <div class="status-btn-group">
+      <button class="btn btn-warning" id="markReviewBtn" title="Oznacz do powtórki (Klawisz 1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        Do powtórki
+      </button>
+      <button class="btn btn-success" id="markKnownBtn" title="Oznacz jako opanowane (Klawisz 2)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Umiem to!
+      </button>
+    </div>
+  </div>
+
+  <div class="keyboard-shortcuts">
+    Skróty: <span class="kbd">Spacja</span> obrót &bull; <span class="kbd">&larr;</span> / <span class="kbd">&rarr;</span> nawigacja &bull; <span class="kbd">1</span> powtórz &bull; <span class="kbd">2</span> umiem &bull; <span class="kbd">S</span> losuj &bull; <span class="kbd">L</span> lista
+  </div>
+
+  <!-- Modal list of concepts -->
+  <div class="modal-overlay" id="listModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h2>Spis pojęć, haseł i motywów</h2>
+        <button class="icon-btn" id="closeModalBtn" title="Zamknij (Esc)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="search-input" id="modalSearch" placeholder="Szukaj pojęcia, epoki lub opisu...">
+        <div class="items-list" id="modalList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const conceptsData = [
+      // ANTYK
+      {
+        id: "antyk-stoicyzm",
+        term: "Stoicyzm",
+        epoch: "Antyk",
+        definition: "Filozofia stworzona przez Zenona z Kition. Głosiła zachowanie wewnętrznego spokoju, równowagi ducha (ataraksji) i cnoty (virtus) niezależnie od wyroków losu (zarówno w radości, jak i w cierpieniu). Kierowanie się rozumem, a nie emocjami.",
+        context: "Horacy (pieśni), Jan Kochanowski (nawiązania w Pieśniach i kryzys stoicyzmu w Trenach)."
+      },
+      {
+        id: "antyk-epikureizm",
+        term: "Epikureizm",
+        epoch: "Antyk",
+        definition: "Filozofia Epikura. Uznawała szczęście za najwyższe dobro, polegające na doznawaniu mądrych, duchowych i cielesnych przyjemności, braku cierpienia i korzystaniu z życia „tu i teraz” (hasło Carpe diem – chwytaj dzień).",
+        context: "Horacy (Ody), Jan Kochanowski (Pieśni biesiadne)."
+      },
+      {
+        id: "antyk-platonizm",
+        term: "Platonizm",
+        epoch: "Antyk",
+        definition: "Filozofia Platona zakładająca podwójność świata: świat idealny (wieczny, doskonały, prawdziwy) oraz świat materialny (zmysłowy, nietrwały, będący jedynie niedoskonałym cieniem idei). Dusza ludzka pochodzi ze świata idei i jest uwięziona w ciele.",
+        context: "Mit jaskini Platona, renesansowy neoplatonizm, romantyczna metafizyka."
+      },
+      {
+        id: "antyk-homo-viator",
+        term: "Homo viator",
+        epoch: "Antyk",
+        definition: "Topos / motyw „człowieka w drodze” – wędrowca, podróżnika, tułacza, pielgrzyma. Życie ludzkie jako podróż pełna prób i doświadczeń w poszukiwaniu celu, mądrości lub powrotu do domu.",
+        context: "Homer (Odyseja – tułaczka Odyseusza do Itaki), Biblia (wędrówka do Ziemi Obiecanej)."
+      },
+      {
+        id: "antyk-fatum",
+        term: "Fatum",
+        epoch: "Antyk",
+        definition: "Nieodwołalny, ślepy, nadrzędny los rządzący życiem człowieka i bogów. Każda próba ucieczki przed przepowiednią fatum paradoksalnie przybliża bohatera do spełnienia jego tragicznego przeznaczenia.",
+        context: "Sofokles (Król Edyp, Antygona)."
+      },
+      {
+        id: "antyk-hybris",
+        term: "Hybris",
+        epoch: "Antyk",
+        definition: "Pycha, zuchwalstwo, zarozumiałość i zaślepienie bohatera tragicznego, który przecenia własne siły i sprzeciwia się prawom boskim lub porządkowi natury, co sprowadza na niego nieuchronną karę bogów (nemesis) i zgubę.",
+        context: "Mit o Ikarze, Niobe, Kreon w „Antygonie” Sofoklesa."
+      },
+      {
+        id: "antyk-non-omnis-moriar",
+        term: "Non omnis moriar",
+        epoch: "Antyk",
+        definition: "Łacińska sentencja Horacego oznaczająca: „Nie wszystek umrę”. Wiara poety w nieśmiertelność duchową dzięki stworzonym dziełom literackim, które przetrwają w pamięci potomnych („Wybudowałem pomnik trwalszy niż ze spiżu”).",
+        context: "Horacy (Pieśń III, 30: Exegi monumentum), Jan Kochanowski (Pieśń XXIV: Niezwykłym i nie leda piórem opatrzony)."
+      },
+      {
+        id: "antyk-katharsis",
+        term: "Katharsis",
+        epoch: "Antyk",
+        definition: "„Oczyszczenie” – podstawowy cel tragedii antycznej według Arystotelesa. Widz, obserwując tragiczne losy bohatera, miał przeżyć wstrząs emocjonalny, litość i trwogę, co prowadziło do wewnętrznego wyzwolenia i harmonii duchowej.",
+        context: "Arystoteles (Poetyka), odbiór spektakli tragedii antycznych (np. „Antygona”)."
+      },
+      {
+        id: "antyk-mimesis",
+        term: "Mimesis",
+        epoch: "Antyk",
+        definition: "Zasada naśladowania natury i rzeczywistości w sztuce i literaturze w sposób prawdopodobny (zasada prawdopodobieństwa życiowego), sformułowana przez Arystotelesa.",
+        context: "Fundament sztuki klasycznej, realizmu i dramatu."
+      },
+      {
+        id: "antyk-filary-kultury",
+        term: "Dwa filary kultury europejskiej",
+        epoch: "Antyk",
+        definition: "Przekonanie, że cała tożsamość europejska wyrosła z dwóch źródeł: tradycji grecko-rzymskiej (Ateny i Rzym: filozofia, logika, prawo, teatr, kanon piękna) oraz tradycji judeochrześcijańskiej (Jerozolima: Biblia, dekalog, monoteizm, etyka miłości bliźniego).",
+        context: "Geneza kultury nowożytnej i literatury polskiej od Średniowiecza po współczesność."
+      },
+
+      // ŚREDNIOWIECZE
+      {
+        id: "sred-teocentryzm",
+        term: "Teocentryzm",
+        epoch: "Średniowiecze",
+        definition: "Pogląd filozoficzno-religijny stawiający Boga (Theos) w absolutnym centrum wszechświata, nauki, sztuki i wszystkich dążeń człowieka. Życie ziemskie miało wartość tylko jako przygotowanie do wieczności i zbawienia.",
+        context: "Bogurodzica, Boska Komedia Dantego, architektura gotycka (strzeliste wieże ku Bogu)."
+      },
+      {
+        id: "sred-uniwersalizm",
+        term: "Uniwersalizm kulturowy",
+        epoch: "Średniowiecze",
+        definition: "Poczucie jedności kulturowej, religijnej i politycznej średniowiecznej Europy: wspólna wiara chrześcijańska, autorytet papieża i cesarza, oraz łacina jako jednolity język nauki, liturgii, prawa i literatury.",
+        context: "Anonimowość dzieł, jednolity obieg rękopisów w klasztorach i na dworach w całej Europie."
+      },
+      {
+        id: "sred-wzorzec-rycerza",
+        term: "Wzorzec idealnego rycerza",
+        epoch: "Średniowiecze",
+        definition: "Średniowieczny topos etosu rycerskiego. Idealny rycerz charakteryzował się bezgraniczną wiernością Bogu, władcy i ojczyźnie, honorem, męstwem, obroną słabszych i czcią wobec wybranki serca (damy serca).",
+        context: "Pieśń o Rolandzie (hrabia Roland ginący za wiarę i króla Karola Wielkiego)."
+      },
+      {
+        id: "sred-wzorzec-ascety",
+        term: "Wzorzec świętego ascety",
+        epoch: "Średniowiecze",
+        definition: "Wzorzec osobowy człowieka, który dobrowolnie rezygnuje z majątku, rodziny, zaszczytów i dóbr doczesnych, poddaje ciało umartwieniu i cierpieniu (asceza), aby osiągnąć czystość duszy i zbawienie wieczne.",
+        context: "Legenda o św. Aleksym."
+      },
+      {
+        id: "sred-wzorzec-wladcy",
+        term: "Wzorzec władcy chrześcijańskiego",
+        epoch: "Średniowiecze",
+        definition: "Średniowieczny wzorzec monarchy: sprawiedliwego, pobożnego, dbającego o Kościół i poddanych, odważnego wodza broniącego granic państwa chrześcijańskiego.",
+        context: "Gall Anonim (Kronika polska – Bolesław Chrobry i Bolesław Krzywousty)."
+      },
+      {
+        id: "sred-memento-mori",
+        term: "Memento mori",
+        epoch: "Średniowiecze",
+        definition: "Łacińskie hasło: „Pamiętaj o śmierci”. Przypomnienie o kruchości, znikomości i przemijaniu życia doczesnego oraz konieczności ciągłego przygotowywania się na sąd ostateczny.",
+        context: "Rozmowa Mistrza Polikarpa ze Śmiercią, sztuki moralitetowe."
+      },
+      {
+        id: "sred-danse-macabre",
+        term: "Danse macabre (Taniec śmierci)",
+        epoch: "Średniowiecze",
+        definition: "Alegoryczny motyw przedstawiający Śmierć (często w postaci gnijącego trupa lub szkieletu z kosą) prowadzącą w korowodzie tanecznym ludzi wszystkich stanów: papieża, cesarza, kupca, chłopa i żebraka. Podkreślał absolutną równość wszystkich ludzi wobec zgonu.",
+        context: "Rozmowa Mistrza Polikarpa ze Śmiercią, średniowieczne freski i drzeworyty."
+      },
+      {
+        id: "sred-ars-bene-moriendi",
+        term: "Ars bene moriendi",
+        epoch: "Średniowiecze",
+        definition: "„Sztuka dobrego / godnego umierania”. Średniowieczny ceremoniał i zbiór zasad, jak chrześcijanin powinien przygotować się do śmierci (spowiedź, modlitwa, przebaczenie wrogom, odrzucenie pokus szatańskich), by ocalić duszę.",
+        context: "Scena śmierci Rolanda w „Pieśni o Rolandzie” (wejście na wzgórze, obrót twarzą ku wrogom, wyciągnięcie rękawicy ku niebu)."
+      },
+
+      // RENESANS
+      {
+        id: "ren-humanizm",
+        term: "Humanizm",
+        epoch: "Renesans",
+        definition: "Główny prąd umysłowy Renesansu. Postawił człowieka (jego godność, talent, intelekt, ziemskie szczęście i ciało) w centrum zainteresowania. Towarzyszyło mu hasło Terencjusza: „Homo sum, humani nihil a me alienum puto” (Człowiekiem jestem i nic, co ludzkie, nie jest mi obce).",
+        context: "Jan Kochanowski (Pieśni, Fraszki), Mikołaj Rej."
+      },
+      {
+        id: "ren-odrodzenie",
+        term: "Odrodzenie (Ad fontes)",
+        epoch: "Renesans",
+        definition: "Odrodzenie kultury, filozofii, języków (łaciny klasycznej, greki i hebrajskiego) oraz ideałów sztuki starożytnej Grecji i Rzymu. Hasło „ad fontes” oznaczało powrót do pierwotnych źródeł wiedzy i Biblii bez średniowiecznych przekłamań.",
+        context: "Odprawa posłów greckich Jana Kochanowskiego (nawiązanie do mitu trojańskiego)."
+      },
+      {
+        id: "ren-reformacja",
+        term: "Reformacja",
+        epoch: "Renesans",
+        definition: "Ruch religijno-społeczny zapoczątkowany w 1517 r. przez wystąpienie Marcina Lutra w Wittenberdze. Doprowadził do rozłamu w Kościele zachodnim (powstanie luteranizmu, kalwinizmu, arianizmu) oraz przyspieszył rozwój języków narodowych (tłumaczenia Biblii na języki ojczyste).",
+        context: "Biblia Jakuba Wujka, Mikołaj Rej (kalwinista), Andrzej Frycz Modrzewski."
+      },
+      {
+        id: "ren-deus-homo-artifex",
+        term: "Deus artifex / Homo artifex",
+        epoch: "Renesans",
+        definition: "Koncepcja przedstawiająca Boga jako „Boskiego Architekta / Artystę”, który stworzył harmonijny, piękny i uporządkowany świat. Człowiek jako „homo artifex” (człowiek twórca) naśladuje Boga poprzez własną twórczość artystyczną i naukę.",
+        context: "Jan Kochanowski: Hymn „Czego chcesz od nas, Panie, za Twe hojne dary?”."
+      },
+      {
+        id: "ren-theatrum-mundi",
+        term: "Theatrum mundi",
+        epoch: "Renesans",
+        definition: "Topos „świata jako teatru”. Życie ludzkie postrzegane jest jako spektakl, a ludzie są aktorami lub marionetkami odgrywającymi przydzielone role, po czym ich „marionetki” chowa się do worka (śmierć).",
+        context: "Jan Kochanowski (Fraszka „O żywocie ludzkim”), William Szekspir (Makbet: „Życie jest tylko przechodnim cieniem, nędznym aktorem...”)."
+      },
+      {
+        id: "ren-fortuna",
+        term: "Fortuna (Koło Fortuny)",
+        epoch: "Renesans",
+        definition: "Motyw zaczerpnięty z mitologii: ślepy, kapryśny i zmienny los, który obraca kołem fortuny – raz wynosi człowieka na szczyty bogactwa i władzy, by za chwilę strącić go na samo dno nędzy.",
+        context: "Jan Kochanowski (Pieśni: „Nie porzucaj nadzieje, jakoć się kolwiek dzieje...”)."
+      },
+      {
+        id: "ren-antropocentryzm",
+        term: "Antropocentryzm",
+        epoch: "Renesans",
+        definition: "Pogląd stawiający człowieka w centrum wszechświata, w opozycji do średniowiecznego teocentryzmu. Uznanie, że świat został stworzony dla człowieka i jego pomyślności.",
+        context: "Mikołaj Rej („Żywot człowieka poczciwego”)."
+      },
+
+      // BAROK
+      {
+        id: "barok-kontrreformacja",
+        term: "Kontrreformacja",
+        epoch: "Barok",
+        definition: "Odpowiedź Kościoła katolickiego na reformację, zapoczątkowana na soborze trydenckim (1545–1563). Obejmowała odnowę duchową, powołanie zakonu jezuitów, rozwój inkwizycji i cenzury (Indeks ksiąg zakazanych), a w sztuce – bogaty, monumentalny barok mający zachwycać i przyciągać wiernych.",
+        context: "Kazania sejmowe Piotra Skargi, żarliwa religijność sarmacka."
+      },
+      {
+        id: "barok-sarmatyzm",
+        term: "Sarmatyzm",
+        epoch: "Barok",
+        definition: "Ideologia i formacja kulturowa polskiej szlachty od końca XVI do XVIII wieku. Opierała się na micie o pochodzeniu szlachty od starożytnego, walecznego ludu Sarmatów. Cechy: kult „złotej wolności”, religijność (Polska jako „przedmurze chrześcijaństwa” – antemurale christianitatis), tradycjonalizm, a w fazie schyłkowej – ksenofobia i megalomania.",
+        context: "Jan Chryzostom Pasek (Pamiętniki), Wacław Potocki, W. Sienkiewicz (Trylogia – portret Sarmatów)."
+      },
+      {
+        id: "barok-marinizm",
+        term: "Marinizm",
+        epoch: "Barok",
+        definition: "Kierunek w poezji barokowej nazwany od włoskiego poety Giambattisty Mariniego. Kładł nacisk na wirtuozerię formalną, bogactwo środków stylistycznych, zaskakujące metafory i grę słów. Jego cel sformułowano w haśle: „Zadziwiać – to poety cel na ziemi”.",
+        context: "Jan Andrzej Morsztyn (Do trupa, Niestatek)."
+      },
+      {
+        id: "barok-konceptyzm",
+        term: "Konceptyzm",
+        epoch: "Barok",
+        definition: "Główny prąd estetyczny poezji barokowej oparty na koncepcie (włoskie concetto) – wyszukanym, zaskakującym pomyśle kompozycyjnym lub puencie, który łączył pozornie odległe zjawiska i szokował czytelnika.",
+        context: "Jan Andrzej Morsztyn w sonecie „Do trupa” – zszokowanie odbiorcy przez zestawienie nieszczęśliwie zakochanego z leżącym trupem."
+      },
+      {
+        id: "barok-vanitas",
+        term: "Vanitas (Vanitas vanitatum)",
+        epoch: "Barok",
+        definition: "Biblijny motyw zaczerpnięty z Księgi Koheleta: „Vanitas vanitatum et omnia vanitas” (Marność nad marnościami i wszystko marność). Podkreślał kruchość, iluzoryczność i nietrwałość wszelkich dóbr doczesnych: urody, bogactwa, młodości i władzy w obliczu nieuchronnej śmierci.",
+        context: "Daniel Naborowski (Krótkość żywota, Marność), motywy czaszki, zegara i zwiędłych kwiatów w malarstwie barokowym."
+      },
+
+      // OŚWIECENIE
+      {
+        id: "osw-racjonalizm",
+        term: "Racjonalizm",
+        epoch: "Oświecenie",
+        definition: "Kierunek filozoficzny (zainicjowany przez Kartezjusza: „Cogito ergo sum” – Myślę, więc jestem), uznający ludzki rozum za jedyne i nadrzędne narzędzie poznawania prawdy o świecie, odrzucający przesądy, dogmaty i zabobony.",
+        context: "Krytyka ciemnoty i zabobonów w utworach Ignacego Krasickiego (Monachomachia)."
+      },
+      {
+        id: "osw-empiryzm",
+        term: "Empiryzm",
+        epoch: "Oświecenie",
+        definition: "Kierunek filozoficzny sformułowany m.in. przez Johna Locke'a. Głosił, że jedynym źródłem wiedzy i prawdziwego poznania jest doświadczenie zmysłowe (umysł nowo narodzonego człowieka to „tabula rasa” – czysta, niezapisana karta).",
+        context: "Rozwój nauk przyrodniczych, eksperymentów i publicystyki oświeceniowej."
+      },
+      {
+        id: "osw-dydaktyzm",
+        term: "Dydaktyzm i Utylitaryzm",
+        epoch: "Oświecenie",
+        definition: "Zasada podporządkowania sztuki i literatury celom wychowawczym i społecznym. Literatura miała „uczyć bawiąc” (hasło biskupa Krasickiego), piętnować wady społeczne, edukować obywateli i służyć naprawie Rzeczypospolitej.",
+        context: "Ignacy Krasicki (Bajki, Satyry – np. „Pijaństwo”, „Żona modna”), Julian Ursyn Niemcewicz („Powrót posła”)."
+      },
+      {
+        id: "osw-klasycyzm",
+        term: "Klasycyzm",
+        epoch: "Oświecenie",
+        definition: "Główny prąd artystyczny Oświecenia, nawiązujący do kanonów antycznych. Charakteryzował się dążeniem do harmonii, jasności języka, umiaru, logiki kompozycji oraz przestrzeganiem zasady decorum (stosowności stylu do treści).",
+        context: "Ignacy Krasicki (Hymn do miłości ojczyzny, bajki, satyry)."
+      },
+      {
+        id: "osw-sentymentalizm",
+        term: "Sentymentalizm",
+        epoch: "Oświecenie",
+        definition: "Prąd artystyczny zapoczątkowany przez Jeana-Jacques'a Rousseau. Kładł nacisk na sferę uczuć, empatię, czułość serca, piękno natury i prostotę wiejskiego życia, przeciwstawiając je zepsuciu miejskiej cywilizacji.",
+        context: "Franciszek Karpiński (sielanka „Laura i Filon”)."
+      },
+      {
+        id: "osw-deizm",
+        term: "Deizm",
+        epoch: "Oświecenie",
+        definition: "Pogląd filozoficzno-religijny głoszący, że Bóg jest stwórcą świata (metafora „Wielkiego Zegarmistrza”), jednak po stworzeniu nie ingeruje w jego prawa, historię ani w losy pojedynczych ludzi. Odrzucał objawienie i cuda.",
+        context: "Poglądy Woltera i części myślicieli encyklopedystów francuskich."
+      },
+
+      // ROMANTYZM
+      {
+        id: "rom-irracjonalizm",
+        term: "Irracjonalizm",
+        epoch: "Romantyzm",
+        definition: "Główny wyznacznik romantycznego światopoglądu. Przekonanie, że prawda o świecie i człowieku jest niedostępna rozumowi i zmysłom, a poznać ją można jedynie za pomocą serca, wiary, intuicji, przeczucia i wyobraźni.",
+        context: "Adam Mickiewicz (Romantyczność: „Czucie i wiara silniej mówi do mnie / Niż mędrca szkiełko i oko”)."
+      },
+      {
+        id: "rom-indywidualizm",
+        term: "Indywidualizm romantyczny",
+        epoch: "Romantyzm",
+        definition: "Kult jednostki wybitnej, genialnej, samotnej i niezrozumianej przez przeciętne społeczeństwo. Bohater romantyczny przeżywa wielkie namiętności, buntuje się przeciw Bogu i światu, a swoje cierpienie poświęca w imię wolności narodu.",
+        context: "Konrad w „Dziadach cz. III”, Kordian w dramacie J. Słowackiego."
+      },
+      {
+        id: "rom-mesjanizm",
+        term: "Mesjanizm",
+        epoch: "Romantyzm",
+        definition: "Idea przypisująca narodowi polskiemu szczególną, zbawczą misję dziejową. Porównywała Polskę pod zaborami do cierpiącego Chrystusa („Polska Chrystusem narodów”), którego męczeństwo i śmierć doprowadzą do zmartwychwstania i wolności wszystkich uciemiężonych ludów.",
+        context: "Adam Mickiewicz (Dziady cz. III – Widzenie księdza Piotra; Księgi narodu polskiego i pielgrzymstwa polskiego)."
+      },
+      {
+        id: "rom-martyrologia",
+        term: "Martyrologia",
+        epoch: "Romantyzm",
+        definition: "Przedstawienie cierpienia, męczeństwa, prześladowań, więzień i wywózek na Sybir narodu polskiego (w tym młodzieży patriotycznej) z rąk carskiego zaborcy.",
+        context: "Dziady cz. III Adama Mickiewicza (opowiadania Sobolewskiego o wywózce kibitkami, los Cichowskiego i Rollisona)."
+      },
+      {
+        id: "rom-wallenrodyzm",
+        term: "Wallenrodyzm",
+        epoch: "Romantyzm",
+        definition: "Postawa tragicznego bohatera, który w obliczu przewagi wroga i niemożności otwartej walki chwyta się metod nieetycznych – zdrady, spisku i podstępu – dla ratowania ojczyzny. Opiera się na dewizie Machiavellego: „Trzeba być lisem i lwem”. Prowadzi bohatera do moralnej i fizycznej zguby.",
+        context: "Adam Mickiewicz (Konrad Wallenrod)."
+      },
+      {
+        id: "rom-ludowosc",
+        term: "Ludowość",
+        epoch: "Romantyzm",
+        definition: "Fascynacja kulturą prostego ludu (pieśni, baśnie, legendy wiejskie, obrzędy). Romantycy czerpali z ludowej moralności, w której dobro zawsze zostaje nagrodzone, a żadna wina nie uchodzi bez kary („Nie masz zbrodni bez kary”).",
+        context: "Adam Mickiewicz (Ballady i romanse – np. „Lilije”, „Świtezianka”; obrzęd dziadów w II cz. „Dziadów”)."
+      },
+      {
+        id: "rom-prometeizm",
+        term: "Prometeizm",
+        epoch: "Romantyzm",
+        definition: "Postawa buntu przeciw bóstwu i cierpienia w imię dobra i szczęścia całej ludzkości lub narodu (nawiązanie do mitologicznego Prometeusza).",
+        context: "Konrad w „Wielkiej Improwizacji” w III części „Dziadów” (żąda od Boga „rządu dusz”)."
+      },
+
+      // POZYTYWIZM
+      {
+        id: "pozyt-scjentyzm",
+        term: "Scjentyzm",
+        epoch: "Pozytywizm",
+        definition: "Koncepcja filozoficzna uznająca naukę (zwłaszcza nauki przyrodnicze, empiryczne i ścisłe) za jedyne pewne i wartościowe źródło wiedzy o człowieku, naturze i prawach społecznych.",
+        context: "Kult nauki i wiedzy w „Lalce” Bolesława Prusa (postać profesora Geista, Juliana Ochockiego)."
+      },
+      {
+        id: "pozyt-praca-organiczna",
+        term: "Praca organiczna",
+        epoch: "Pozytywizm",
+        definition: "Główny postulat polskiego pozytywizmu. Traktowanie społeczeństwa jak żywego organizmu biologicznego (koncepcja H. Spencera): aby cały organizm był zdrowy i silny, harmonijnie rozwijać się muszą wszystkie jego narządy – gospodarka, handel, przemysł i kultura.",
+        context: "Działalność Stanisława Wokulskiego w „Lalce”, postawa Benedykta Korczyńskiego w „Nad Niemnem” Elizy Orzeszkowej."
+      },
+      {
+        id: "pozyt-praca-u-podstaw",
+        term: "Praca u podstaw",
+        epoch: "Pozytywizm",
+        definition: "Programowa praca oświatowa, kulturalna i medyczna prowadzona przez inteligencję na rzecz najniższych, najbardziej zaniedbanych warstw społecznych – chłopstwa, proletariatu i biedoty miejskiej, stanowiących fundament („podstawę”) narodu.",
+        context: "Eliza Orzeszkowa, nowele Bolesława Prusa („Anielka”, „Katarynka”) i Marii Konopnickiej („Wolny najmita”)."
+      },
+      {
+        id: "pozyt-asymilacja-zydow",
+        term: "Asymilacja Żydów",
+        epoch: "Pozytywizm",
+        definition: "Postulat pozytywistów dążący do przezwyciężenia antysemityzmu i integracji społeczności żydowskiej ze społeczeństwem polskim przy zachowaniu ich tożsamości kulturowo-religijnej, tak by stali się lojalnymi obywatelami kraju.",
+        context: "Eliza Orzeszkowa (esej „O Żydach i kwestii żydowskiej”, nowela „Mendel Gdański” M. Konopnickiej), postać doktora Szumana w „Lalce”."
+      },
+      {
+        id: "pozyt-emancypacja-kobiet",
+        term: "Emancypacja kobiet",
+        epoch: "Pozytywizm",
+        definition: "Ruch na rzecz równouprawnienia kobiet, zapewnienia im prawa do edukacji wyższej, samodzielnej pracy zarobkowej oraz niezależności majątkowej od mężczyzn.",
+        context: "Publicystyka Elizy Orzeszkowej („Marta”), postać Heleny Stawskiej w „Lalce” Bolesława Prusa."
+      },
+      {
+        id: "pozyt-realizm-naturalizm",
+        term: "Realizm i Naturalizm",
+        epoch: "Pozytywizm",
+        definition: "Główne prądy literackie. Realizm dążył do wiernego, obiektywnego i panoramicznego odtworzenia życia społecznego (zasada typowości bohaterów). Naturalizm (Émile Zola) traktował człowieka jak istotę biologiczną rządzoną instynktami i dziedzicznością, ukazując bez upiększeń ciemne strony egzystencji (nędza, choroba, brzydota).",
+        context: "Bolesław Prus („Lalka” – realizm krytyczny), Fiodor Dostojewski („Zbrodnia i kara”)."
+      },
+
+      // MŁODA POLSKA
+      {
+        id: "mloda-dekadentyzm",
+        term: "Dekadentyzm",
+        epoch: "Młoda Polska",
+        definition: "Nurt myślowy i postawa artystów u schyłku XIX wieku (fin de siècle). Charakteryzował się poczuciem wyczerpania cywilizacji, niemocą twórczą, melancholią, lękiem przed przyszłością i przekonaniem o bezsensie jakiegokolwiek działania.",
+        context: "Kazimierz Przerwa-Tetmajer (wiersz „Koniec wieku XIX”: „Jakaż jest przeciw włóczni złego tarcza?... Nic!”)."
+      },
+      {
+        id: "mloda-sztuka-dla-sztuki",
+        term: "„Sztuka dla sztuki” (L'art pour l'art)",
+        epoch: "Młoda Polska",
+        definition: "Hasło głoszące absolutną autonomię sztuki. Odrzucenie służebności sztuki wobec celów społecznych, narodowych, moralnych czy dydaktycznych. Jedynym celem sztuki miało być kreowanie czystego, bezinteresownego Piękna.",
+        context: "Stanisław Przybyszewski (manifest „Confiteor”: „Sztuka nie ma żadnego celu, jest celem sama w sobie...”)."
+      },
+      {
+        id: "mloda-chlopomania",
+        term: "Chłopomania (chłopomaństwo)",
+        epoch: "Młoda Polska",
+        definition: "Zjawisko fascynacji inteligencji i artystów miejskich folklorem, obyczajami, siłą witalną i prostotą życia chłopskiego, często powierzchowne i idealizujące wieś, połączone z zawieraniem małżeństw inteligencko-chłopskich.",
+        context: "Stanisław Wyspiański („Wesele” – wesele krakowskiego poety Lucjana Rydla z chłopką Jadwigą Mikołajczykówną; obnażenie pozorności tego bratania)."
+      },
+      {
+        id: "mloda-schopenhaueryzm",
+        term: "Filozofia Schopenhauera",
+        epoch: "Młoda Polska",
+        definition: "Skrajnie pesymistyczna filozofia Artura Schopenhauera. Człowiekiem rządzi ślepy, bezrozumny „pęd życiowy” (wola), który nigdy nie może zostać zaspokojony, co czyni życie pasmem cierpień. Ratunkiem może być jedynie kontemplacja sztuki, współczucie lub ucieczka w nirwanę (stan niebytu i wyzbycia się pragnień).",
+        context: "Wiersze K. Przerwy-Tetmajera („Nie wierzę w nic”, „Hymn do Nirwany”)."
+      },
+      {
+        id: "mloda-nietzscheanizm",
+        term: "Filozofia Nietzschego",
+        epoch: "Młoda Polska",
+        definition: "Koncepcja Fryderyka Nietzschego. Odrzucała tradycyjną moralność chrześcijańską jako „moralność niewolników” (pochwałę pokory i słabości). Postulowała pochwałę siły, wolności, „woli mocy” oraz kult „nadczłowieka” (Übermensch) – jednostki silnej, aktywnej, stojącej „poza dobrem i złem”.",
+        context: "Poezja Leopolda Staffa („Kowal”), Jan Kasprowicz, Stefan Żeromski."
+      },
+      {
+        id: "mloda-bergsonizm",
+        term: "Filozofia Bergsona",
+        epoch: "Młoda Polska",
+        definition: "Filozofia Henriego Bergsona oparta na intuicjonizmie. Uznawała rozum za narzędzie schematyczne i ograniczone, a prawdziwe poznanie rzeczywistości przypisywała intuicji. Światem porusza ciągły strumień życia i nieustanna ewolucja twórcza („élan vital” – pęd życiowy).",
+        context: "Wpływ na młodopolski witalizm i impresjonizm."
+      },
+      {
+        id: "mloda-symbolizm",
+        term: "Symbolizm",
+        epoch: "Młoda Polska",
+        definition: "Prąd artystyczny zakładający, że świat materialny jest jedynie zasłoną skrywającą głębszą, niewyrażalną wprost rzeczywistość duchową i metafizyczną, którą można przekazać odbiorcy wyłącznie za pomocą wieloznacznego symbolu.",
+        context: "Stanisław Wyspiański („Wesele” – chochoł, złoty róg, czapka z pawich piór, kosy na sztorc)."
+      },
+      {
+        id: "mloda-chocholi-taniec",
+        term: "Chocholi taniec",
+        epoch: "Młoda Polska",
+        definition: "Słynny motyw z finału „Wesela” Stanisława Wyspiańskiego: hipnotyczny, powolny taniec postaci w takt monotonnej melodii granej przez Chochoła na patykach. Symbol narodowej bierności, uśpienia, marazmu, zaprzepaszczenia szansy na wolność i niezdolności Polaków do czynu zbrojnego.",
+        context: "Stanisław Wyspiański („Wesele”)."
+      },
+
+      // DWUDZIESTOLECIE MIĘDZYWOJENNE
+      {
+        id: "miedzy-awangarda",
+        term: "Awangarda (Krakowska / Futuryzm)",
+        epoch: "Dwudziestolecie",
+        definition: "Radykalny ruch artystyczny odrzucający dotychczasowe kanony przeszłości („spalić muzea i biblioteki”). Hasło Awangardy Krakowskiej Peipera: „3 x M” (Miasto, Masa, Maszyna). Poezja jako konstrukcja, oszczędność słowa („minimum słów – maksimum treści”), kult techniki i urbanizacji.",
+        context: "Tadeusz Peiper, Julian Przyboś, futuryści (Bruno Jasieński)."
+      },
+      {
+        id: "miedzy-skamander",
+        term: "Grupa poetycka Skamander",
+        epoch: "Dwudziestolecie",
+        definition: "Najpopularniejsza grupa poetycka okresu międzywojennego (Tuwim, Lechoń, Słonimski, Iwaszkiewicz, Wierzyński). Głosili zerwanie z patriotyczną misją wieszcza narodowego („A wiosną – niechaj wiosnę, nie Polskę zobaczę”), witalizm, pochwałę biologicznego życia, tematykę codzienną i język potoczny.",
+        context: "Julian Tuwim (Czyhanie na Boga, Sokrates tańczący), Jan Lechoń (Herostrates)."
+      },
+      {
+        id: "miedzy-powiesc-psychologiczna",
+        term: "Powieść psychologiczna",
+        epoch: "Dwudziestolecie",
+        definition: "Odmiana powieści, która centrum uwagi przesuwa z zewnętrznych wydarzeń na analizę wewnętrznych przeżyć psychicznych, ukrytych motywacji, kompleksów, lęków i traum bohaterów pod wpływem psychoanalizy Zygmunta Freuda.",
+        context: "Zofia Nałkowska („Granica” – motyw granicy psychologicznej i moralnej Zenona Ziembiewicza)."
+      },
+      {
+        id: "miedzy-groteska",
+        term: "Groteska i deformacja świata",
+        epoch: "Dwudziestolecie",
+        definition: "Kategoria estetyczna polegająca na celowym zaburzeniu praw logiki, łączeniu elementów sprzecznych (komizmu z grozą, wzniosłości z wulgarnością, absurdu z realizmem) oraz deformacji rzeczywistości w celu obnażenia fałszu i skostnienia społecznych form.",
+        context: "Witold Gombrowicz („Ferdydurke”), Witkacy („Szewcy”), Bruno Schulz („Sklepy cynamonowe”)."
+      },
+      {
+        id: "miedzy-geba-upupienie",
+        term: "„Gęba”, „Pupa” i „Łydka” (Gombrowicz)",
+        epoch: "Dwudziestolecie",
+        definition: "Kluczowe pojęcia z filozofii formy Witolda Gombrowicza. Człowiek nigdy nie jest autentyczny, bo w relacji z innymi nieustannie przyprawia się mu „Gębę” (narzuconą maskę/rolę społeczną). „Upupienie” to zdziecinnienie i wtłoczenie jednostki w poddaństwo, a „łydka” symbolizuje nowoczesną, bezrefleksyjną swobodę obyczajową.",
+        context: "Witold Gombrowicz („Ferdydurke”)."
+      },
+      {
+        id: "miedzy-szklane-domy",
+        term: "Szklane domy",
+        epoch: "Dwudziestolecie",
+        definition: "Mit opowiedziany Cezaremu Baryce przez ojca Seweryna o rzekomej nowej Polsce: nowoczesnej, higienicznej, sprawiedliwej społecznie i zbudowanej z tanich, szklanych domów. Stał się symbolem utopijnych marzeń oraz bolesnego rozczarowania rzeczywistością ubogiej, rozdartej konfliktami odrodzonej II RP.",
+        context: "Stefan Żeromski („Przedwiośnie”)."
+      },
+      {
+        id: "miedzy-katastrofizm",
+        term: "Katastrofizm międzywojenny",
+        epoch: "Dwudziestolecie",
+        definition: "Prąd myślowy z lat 30. XX wieku wyrażający przeczucie nieuchronnego upadku kultury europejskiej, nadejścia mechanizacji niszczącej indywidualizm oraz triumfu zbrodniczych systemów totalitarnych (faszyzmu i komunizmu).",
+        context: "Stanisław Ignacy Witkiewicz – Witkacy („Szewcy”, „Nienasycenie”), poezja Józefa Czechowicza i Żagarów."
+      },
+
+      // WOJNA, OKUPACJA I LITERATURA WSPÓŁCZESNA
+      {
+        id: "wspol-pokolenie-kolumbow",
+        term: "Pokolenie Kolumbów",
+        epoch: "Współczesność",
+        definition: "Nazwa pokolenia polskich pisarzy i poetów urodzonych ok. 1920 r., których wczesna młodość i start życiowy przypadły na czas II wojny światowej (od tytułu powieści Romana Bratnego „Kolumbowie. Rocznik 20”). Cechy: tragizm pokoleniowy, walka zbrojna (Powstanie Warszawskie), poczucie utraconej młodości i moralnego okaleczenia.",
+        context: "Krzysztof Kamil Baczyński, Tadeusz Gajcy, Tadeusz Borowski, Gustaw Herling-Grudziński."
+      },
+      {
+        id: "wspol-czlowiek-zlagrowany",
+        term: "Człowiek zlagrowany (behawiorizm)",
+        epoch: "Współczesność",
+        definition: "Pojęcie sformułowane przez Tadeusza Borowskiego. Człowiek zlagrowany to więzień hitlerowskiego obozu koncentracyjnego (lagru), który aby biologicznie przetrwać, wyzbywa się wszelkich dawnych zasad moralnych, akceptuje nieludzkie reguły obozowe i traktuje śmierć współwięźniów obojętnie.",
+        context: "Tadeusz Borowski (opowiadania: „Proszę państwa do gazu”, „U nas w Auschwitzu...”)."
+      },
+      {
+        id: "wspol-literatura-lagrowa",
+        term: "Literatura łagrowa",
+        epoch: "Współczesność",
+        definition: "Literatura dokumentująca i analizująca rzeczywistość sowieckich obozów pracy przymusowej (łagrów w systemie Gułagu). Ukazuje niszczenie godności człowieka przez głód, morderczą pracę i terror, ale i próby ocalenia człowieczeństwa.",
+        context: "Gustaw Herling-Grudziński („Inny świat”), Aleksander Sołżenicyn."
+      },
+      {
+        id: "wspol-holokaust",
+        term: "Zagłada / Holokaust (Szoa)",
+        epoch: "Współczesność",
+        definition: "Zorganizowana, masowa i systemowa eksterminacja narodu żydowskiego przez nazistowskie Niemcy podczas II wojny światowej. W literaturze temat ten podejmuje próby opisu niewyobrażalnej tragedii, psychiki ofiar i świadków oraz walki o godną śmierć.",
+        context: "Hanna Krall („Zdążyć przed Panem Bogiem” – rozmowa z Markiem Edelmanem o powstaniu w getcie warszawskim), Zofia Nałkowska („Medaliony”)."
+      },
+      {
+        id: "wspol-socrealizm",
+        term: "Socrealizm (Realizm socjalistyczny)",
+        epoch: "Współczesność",
+        definition: "Kierunek w sztuce i literaturze narzucony w 1949 r. przez władze komunistyczne w Polsce jako jedyna obowiązująca doktryna. Wymagał partyjnej ideologizacji, schematyzmu, optymizmu propagandowego i gloryfikacji pracy ludu oraz budowy socjalizmu.",
+        context: "Literatura lat 1949–1956 w PRL (tzw. powieści produkcyjne)."
+      },
+      {
+        id: "wspol-drugi-obieg",
+        term: "Literatura drugiego obiegu (bibuła)",
+        epoch: "Współczesność",
+        definition: "Nielegalna, podziemna działalność wydawnicza w Polsce w czasach PRL (zwłaszcza w latach 70. i 80. po powstaniu KOR i Solidarności). Książki i czasopisma drukowane bez państwowej cenzury, poruszające zakazane tematy (np. zbrodnia katyńska, Gułag).",
+        context: "Twórczość autorów emigracyjnych (Gombrowicz, Miłosz, Herling-Grudziński) i krajowych dysydentów."
+      },
+      {
+        id: "wspol-postmodernizm",
+        term: "Postmodernizm",
+        epoch: "Współczesność",
+        definition: "Kierunek w kulturze i literaturze schyłku XX i XXI wieku. Charakteryzuje się odrzuceniem jednolitych wielkich teorii i dogmatów, zacieraniem granic między kulturą elitarną a masową, wieloznacznością, ironią, pastiszem, intertekstualnością (gra cytatami) i relatywizmem prawdy.",
+        context: "Olga Tokarczuk, Umberto Eco, Stanisław Lem."
+      }
+    ];
+
+    let state = {
+      filter: 'all',
+      epochFilter: 'all',
+      mode: 'term-first',
+      currentIndex: 0,
+      isFlipped: false,
+      userScores: JSON.parse(localStorage.getItem('fiszki_pojecia_scores') || '{}'),
+      items: [...conceptsData]
+    };
+
+    const cardEl = document.getElementById('flashcard');
+    const frontContent = document.getElementById('frontContent');
+    const backContent = document.getElementById('backContent');
+    const frontBadge = document.getElementById('frontBadge');
+    const backBadge = document.getElementById('backBadge');
+    const frontStatus = document.getElementById('frontStatus');
+    const backStatus = document.getElementById('backStatus');
+    const frontIndexHint = document.getElementById('frontIndexHint');
+    const backIndexHint = document.getElementById('backIndexHint');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const countAll = document.getElementById('countAll');
+    const countReview = document.getElementById('countReview');
+    const countKnown = document.getElementById('countKnown');
+    const markKnownBtn = document.getElementById('markKnownBtn');
+    const markReviewBtn = document.getElementById('markReviewBtn');
+    const modeSelect = document.getElementById('modeSelect');
+    const epochFilterSelect = document.getElementById('epochFilterSelect');
+
+    function saveScores() {
+      localStorage.setItem('fiszki_pojecia_scores', JSON.stringify(state.userScores));
+      updateCounts();
+    }
+
+    function updateCounts() {
+      let known = 0;
+      let review = 0;
+      conceptsData.forEach(item => {
+        if (state.userScores[item.id] === 'known') known++;
+        else if (state.userScores[item.id] === 'review') review++;
+      });
+      countAll.textContent = conceptsData.length;
+      countReview.textContent = review;
+      countKnown.textContent = known;
+    }
+
+    function getFilteredList() {
+      return state.items.filter(item => {
+        // Status filter
+        if (state.filter === 'known' && state.userScores[item.id] !== 'known') return false;
+        if (state.filter === 'review' && state.userScores[item.id] !== 'review') return false;
+
+        // Epoch filter
+        if (state.epochFilter !== 'all' && item.epoch !== state.epochFilter) return false;
+
+        return true;
+      });
+    }
+
+    function getCurrentItem() {
+      const list = getFilteredList();
+      if (list.length === 0) return null;
+      if (state.currentIndex >= list.length) state.currentIndex = 0;
+      if (state.currentIndex < 0) state.currentIndex = list.length - 1;
+      return list[state.currentIndex];
+    }
+
+    function renderCard() {
+      const list = getFilteredList();
+      if (list.length === 0) {
+        frontBadge.textContent = "Koniec";
+        backBadge.textContent = "Koniec";
+        frontStatus.textContent = "-";
+        backStatus.textContent = "-";
+        frontStatus.className = "status-badge";
+        backStatus.className = "status-badge";
+
+        frontContent.innerHTML = `
+          <div class="concept-title" style="font-size: 1.5rem; color: var(--text-muted)">Brak pojęć w wybranej grupie</div>
+          <p style="margin-top: 10px; color: var(--text-muted)">Zmień filtr statusu lub wybierz inną epokę z listy u góry.</p>
+        `;
+        backContent.innerHTML = frontContent.innerHTML;
+        progressBar.style.width = '100%';
+        progressText.textContent = `0 / 0`;
+        return;
+      }
+
+      const item = getCurrentItem();
+      const currentStatus = state.userScores[item.id];
+
+      let statusText = "Do nauki";
+      let statusClass = "status-badge";
+      if (currentStatus === 'known') {
+        statusText = "✓ Opanowane";
+        statusClass = "status-badge known";
+      } else if (currentStatus === 'review') {
+        statusText = "⚠ Do powtórki";
+        statusClass = "status-badge review";
+      }
+
+      frontBadge.textContent = item.epoch;
+      backBadge.textContent = item.epoch;
+      frontStatus.textContent = statusText;
+      frontStatus.className = statusClass;
+      backStatus.textContent = statusText;
+      backStatus.className = statusClass;
+
+      const idxStr = `Pojęcie ${state.currentIndex + 1}/${list.length}`;
+      frontIndexHint.textContent = idxStr;
+      backIndexHint.textContent = idxStr;
+      progressText.textContent = `${state.currentIndex + 1} / ${list.length}`;
+      progressBar.style.width = `${((state.currentIndex + 1) / list.length) * 100}%`;
+
+      markKnownBtn.classList.toggle('active', currentStatus === 'known');
+      markReviewBtn.classList.toggle('active', currentStatus === 'review');
+
+      if (state.mode === 'term-first') {
+        // Front: Term
+        frontContent.innerHTML = `
+          <div class="epoch-origin-banner">🏛️ Epoka: ${item.epoch}</div>
+          <div class="concept-title">${item.term}</div>
+          <div style="color: var(--text-muted); font-size: 0.95rem;">Co oznacza to pojęcie i w jakich lekturach występuje?</div>
+        `;
+
+        // Back: Epoch + Definition + Examples
+        backContent.innerHTML = `
+          <div class="epoch-origin-banner">🏛️ Epoka: ${item.epoch}</div>
+          <div style="font-size: 1.25rem; font-weight: 800; color: #818cf8; margin-bottom: 10px;">${item.term}</div>
+          <div class="definition-box">${item.definition.replace(/\n/g, '<br>')}</div>
+          <div class="example-box">
+            <strong>Kontekst / Dzieła i lektury:</strong>
+            <span class="highlight">${item.context.replace(/\n/g, '<br>')}</span>
+          </div>
+        `;
+      } else {
+        // Reverse mode: Definition shown, guess term and epoch!
+        frontContent.innerHTML = `
+          <div style="font-size: 0.85rem; font-weight: 700; color: #818cf8; text-transform: uppercase; margin-bottom: 12px;">Jakie to pojęcie i z jakiej epoki?</div>
+          <div class="definition-box" style="text-align: center;">${item.definition.replace(/\n/g, '<br>')}</div>
+          <div class="example-box" style="margin-top: 10px;">
+            <strong>Kontekst / lektury:</strong>
+            <span class="highlight">${item.context.replace(/\n/g, '<br>')}</span>
+          </div>
+        `;
+
+        backContent.innerHTML = `
+          <div style="font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Prawidłowa odpowiedź:</div>
+          <div class="epoch-origin-banner">🏛️ Epoka: ${item.epoch}</div>
+          <div class="concept-title" style="color: #a855f7; margin-bottom: 8px;">${item.term}</div>
+          <div class="example-box" style="margin-top: 14px;">
+            <strong>Znaczenie:</strong>
+            <span class="highlight">${item.definition.replace(/\n/g, '<br>')}</span>
+          </div>
+        `;
+      }
+    }
+
+    function flipCard() {
+      state.isFlipped = !state.isFlipped;
+      cardEl.classList.toggle('is-flipped', state.isFlipped);
+    }
+
+    function setFlipped(val) {
+      state.isFlipped = val;
+      cardEl.classList.toggle('is-flipped', state.isFlipped);
+    }
+
+    function nextCard() {
+      const list = getFilteredList();
+      if (list.length <= 1) return;
+      setFlipped(false);
+      setTimeout(() => {
+        state.currentIndex = (state.currentIndex + 1) % list.length;
+        renderCard();
+      }, 150);
+    }
+
+    function prevCard() {
+      const list = getFilteredList();
+      if (list.length <= 1) return;
+      setFlipped(false);
+      setTimeout(() => {
+        state.currentIndex = (state.currentIndex - 1 + list.length) % list.length;
+        renderCard();
+      }, 150);
+    }
+
+    function markStatus(type) {
+      const item = getCurrentItem();
+      if (!item) return;
+
+      if (state.userScores[item.id] === type) {
+        delete state.userScores[item.id];
+      } else {
+        state.userScores[item.id] = type;
+        if (type === 'known') triggerConfetti();
+      }
+      saveScores();
+      renderCard();
+    }
+
+    function shuffleCards() {
+      setFlipped(false);
+      setTimeout(() => {
+        for (let i = state.items.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [state.items[i], state.items[j]] = [state.items[j], state.items[i]];
+        }
+        state.currentIndex = 0;
+        renderCard();
+      }, 150);
+    }
+
+    // Events
+    cardEl.addEventListener('click', (e) => {
+      if (e.target.closest('button')) return;
+      flipCard();
+    });
+
+    document.getElementById('flipBtn').addEventListener('click', flipCard);
+    document.getElementById('nextBtn').addEventListener('click', nextCard);
+    document.getElementById('prevBtn').addEventListener('click', prevCard);
+    document.getElementById('shuffleBtn').addEventListener('click', shuffleCards);
+    document.getElementById('markKnownBtn').addEventListener('click', () => markStatus('known'));
+    document.getElementById('markReviewBtn').addEventListener('click', () => markStatus('review'));
+
+    modeSelect.addEventListener('change', (e) => {
+      state.mode = e.target.value;
+      setFlipped(false);
+      renderCard();
+    });
+
+    epochFilterSelect.addEventListener('change', (e) => {
+      state.epochFilter = e.target.value;
+      state.currentIndex = 0;
+      setFlipped(false);
+      renderCard();
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.filter = btn.dataset.filter;
+        state.currentIndex = 0;
+        setFlipped(false);
+        renderCard();
+      });
+    });
+
+    document.getElementById('themeBtn').addEventListener('click', () => {
+      const current = document.body.getAttribute('data-theme');
+      document.body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    });
+
+    // Modal List
+    const listBtn = document.getElementById('listBtn');
+    const listModal = document.getElementById('listModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalSearch = document.getElementById('modalSearch');
+    const modalList = document.getElementById('modalList');
+
+    function openModal() {
+      renderModalList();
+      listModal.classList.add('active');
+      modalSearch.value = '';
+      modalSearch.focus();
+    }
+
+    function closeModal() {
+      listModal.classList.remove('active');
+    }
+
+    function renderModalList(query = '') {
+      modalList.innerHTML = '';
+      const q = query.toLowerCase().trim();
+      const filtered = conceptsData.filter(item => {
+        return item.term.toLowerCase().includes(q) ||
+               item.epoch.toLowerCase().includes(q) ||
+               item.definition.toLowerCase().includes(q) ||
+               item.context.toLowerCase().includes(q);
+      });
+
+      if (filtered.length === 0) {
+        modalList.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted)">Nie znaleziono pasujących pojęć.</div>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const itemStatus = state.userScores[item.id];
+        let statusBadge = '';
+        if (itemStatus === 'known') statusBadge = '<span style="color:#10b981; font-size:0.75rem;">✓ Opanowane</span>';
+        else if (itemStatus === 'review') statusBadge = '<span style="color:#f59e0b; font-size:0.75rem;">⚠ Do powtórki</span>';
+
+        const row = document.createElement('div');
+        row.className = 'list-item';
+        row.innerHTML = `
+          <div class="list-item-title">
+            <span>${item.term}</span>
+            <span>${statusBadge}</span>
+          </div>
+          <div class="list-item-epoch">🏛️ ${item.epoch}</div>
+          <div class="list-item-def">${item.definition}</div>
+          <div class="list-item-example"><strong>Kontekst:</strong> ${item.context}</div>
+        `;
+        row.addEventListener('click', () => {
+          if (state.filter !== 'all') {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-filter="all"]').classList.add('active');
+            state.filter = 'all';
+          }
+          if (state.epochFilter !== 'all') {
+            epochFilterSelect.value = 'all';
+            state.epochFilter = 'all';
+          }
+          const list = getFilteredList();
+          const targetIndex = list.findIndex(x => x.id === item.id);
+          if (targetIndex !== -1) {
+            state.currentIndex = targetIndex;
+            setFlipped(false);
+            renderCard();
+          }
+          closeModal();
+        });
+        modalList.appendChild(row);
+      });
+    }
+
+    listBtn.addEventListener('click', openModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    listModal.addEventListener('click', (e) => {
+      if (e.target === listModal) closeModal();
+    });
+
+    modalSearch.addEventListener('input', (e) => {
+      renderModalList(e.target.value);
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (listModal.classList.contains('active')) {
+        if (e.key === 'Escape') closeModal();
+        return;
+      }
+
+      if (e.code === 'Space') {
+        e.preventDefault();
+        flipCard();
+      } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        nextCard();
+      } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        prevCard();
+      } else if (e.key === '1') {
+        markStatus('review');
+      } else if (e.key === '2') {
+        markStatus('known');
+      } else if (e.key === 's' || e.key === 'S') {
+        shuffleCards();
+      } else if (e.key === 'l' || e.key === 'L') {
+        openModal();
+      }
+    });
+
+    function triggerConfetti() {
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#6366f1', '#a855f7', '#10b981', '#f59e0b', '#ec4899'];
+
+      for (let i = 0; i < 40; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2 + 50,
+          vx: (Math.random() - 0.5) * 12,
+          vy: (Math.random() - 0.7) * 14,
+          size: Math.random() * 6 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 10,
+          opacity: 1
+        });
+      }
+
+      let frame = 0;
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.35;
+          p.rotation += p.vRot;
+          p.opacity -= 0.018;
+
+          if (p.opacity > 0) {
+            alive = true;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rotation * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = Math.max(0, p.opacity);
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+            ctx.restore();
+          }
+        });
+
+        frame++;
+        if (alive && frame < 90) {
+          requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      animate();
+    }
+
+    updateCounts();
+    renderCard();
+  </script>
+</body>
+</html>
